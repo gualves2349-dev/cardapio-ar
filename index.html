@@ -198,6 +198,34 @@
         </model-viewer>
       </article>
 
+      <article class="controle">
+        <div class="controle-info">
+          <h3>Controle do ar</h3>
+          <p class="descricao">controle do ar split samsung.</p>
+          <span class="preco">R$ 14,00</span>
+          <button class="botao-ar" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+            </svg>
+            Ver na minha mesa
+          </button>
+          <p class="aviso" role="status" aria-live="polite"></p>
+        </div>
+
+        <model-viewer
+          src="modelos/guanabara.glb"
+          alt="Controle split samsung em 3D"
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          ar-scale="fixed"
+          camera-controls
+          auto-rotate
+          interaction-prompt="none"
+          shadow-intensity="1"
+          loading="lazy">
+        </model-viewer>
+      </article>
+
     </div>
   </main>
 
