@@ -234,7 +234,39 @@
           <button slot="ar-button" style="display:none" aria-hidden="true"></button>
         </model-viewer>
       </article>
-
+      
+      <article class="prato">
+        <div class="prato-info">
+          <h3>temaki</h3>
+          <p class="descricao">tameki boladao.</p>
+          <span class="preco">R$ 14,00</span>
+          <button class="botao-ar" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+            </svg>
+            Ver na minha mesa
+          </button>
+          <p class="aviso" role="status" aria-live="polite"></p>
+        </div>
+        
+      <model-viewer
+          src="modelos/temaki.glb"
+          alt="etmaki"
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          ar-scale="fixed"
+          camera-orbit="0deg 70deg auto"
+          min-camera-orbit="0deg 70deg auto"
+          max-camera-orbit="0deg 70deg auto"
+          disable-zoom
+          disable-pan
+          interaction-prompt="none"
+          shadow-intensity="1"
+          loading="lazy">
+          <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+        </model-viewer>
+        
+      </article>
     </div>
   </main>
 
