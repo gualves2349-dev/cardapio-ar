@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cardápio | Doce Sabor Café</title>
+  <title>Cardápio | Exemplo Realidade Aumentada</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -158,16 +158,16 @@
 <body>
 
   <header class="topo">
-    <h1>Doce Sabor Café</h1>
+    <h1>Cardapio Realidade Aumentada</h1>
     <p>Escolha seu item e veja como ele fica na sua mesa.</p>
   </header>
 
   <main>
-    <h2 class="categoria">Sobremesas</h2>
+    <h2 class="categoria">Itens</h2>
 
     <div class="grade">
 
-      <!-- ============ ITEM: Fatia de bolo ============
+<!-- ============ ITEM: Fatia de bolo ============
            Para adicionar outro item, copie este bloco <article> inteiro,
            cole logo abaixo e troque: src, alt, nome, descrição e preço. -->
       <article class="prato">
@@ -202,12 +202,14 @@
         </model-viewer>
         
       </article>
-
+<!-- ============ FIM ITEM: Bolo ============ --> 
+      
+<!-- ============ ITEM: Controle ============ -->
       <article class="prato">
         <div class="prato-info">
-          <h3>Controle do ar</h3>
-          <p class="descricao">controle do ar split samsung.</p>
-          <span class="preco">R$ 14,00</span>
+          <h3>Controle do Ar Cond. Split Samsung</h3>
+          <p class="descricao">Controle do Ar Cond. Split Samsung.</p>
+          <span class="preco">R$ 50,00</span>
           <button class="botao-ar" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
@@ -218,8 +220,8 @@
         </div>
 
         <model-viewer
-          src="modelos/guanabara.glb"
-          alt="Controle split Samsung em 3D"
+          src="modelos/controle.glb"
+          alt="Controle Split Samsung em 3D"
           ar
           ar-modes="webxr scene-viewer quick-look"
           ar-scale="fixed"
@@ -234,12 +236,14 @@
           <button slot="ar-button" style="display:none" aria-hidden="true"></button>
         </model-viewer>
       </article>
+<!-- ============ FIM ITEM: Controle ============ -->
       
+<!-- ============ ITEM: Mouse ============ -->      
       <article class="prato">
         <div class="prato-info">
-          <h3>temaki</h3>
-          <p class="descricao">tameki boladao.</p>
-          <span class="preco">R$ 14,00</span>
+          <h3>Mouse Logitech Bluetooth</h3>
+          <p class="descricao">Mouse Logitech Bluetooth.</p>
+          <span class="preco">R$ 50,00</span>
           <button class="botao-ar" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
@@ -250,8 +254,8 @@
         </div>
         
       <model-viewer
-          src="modelos/temaki.glb"
-          alt="etmaki"
+          src="modelos/mouse.glb"
+          alt="Mouse Logitech em 3D"
           ar
           ar-modes="webxr scene-viewer quick-look"
           ar-scale="fixed"
@@ -265,10 +269,46 @@
           loading="lazy">
           <button slot="ar-button" style="display:none" aria-hidden="true"></button>
         </model-viewer>
-        
       </article>
+<!-- ============ FIM ITEM: Mouse ============ -->
+
+<!-- ============ ITEM: Relogio ============ -->       
+      <article class="prato">
+        <div class="prato-info">
+          <h3>Relogio Tag Heuer F1</h3>
+          <p class="descricao">Relogio Tag Heuer F1.</p>
+          <span class="preco">R$ 250,00</span>
+          <button class="botao-ar" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+            </svg>
+            Ver na minha mesa
+          </button>
+          <p class="aviso" role="status" aria-live="polite"></p>
+        </div>
+        
+      <model-viewer
+          src="modelos/relogio.glb"
+          alt="Relogio Tag Heuer F1 em 3D"
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          ar-scale="fixed"
+          camera-orbit="0deg 70deg auto"
+          min-camera-orbit="0deg 70deg auto"
+          max-camera-orbit="0deg 70deg auto"
+          disable-zoom
+          disable-pan
+          interaction-prompt="none"
+          shadow-intensity="1"
+          loading="lazy">
+          <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+        </model-viewer>        
+      </article>
+<!-- ============ FIMITEM: Relogio ============ --> 
+      
     </div>
   </main>
+  
 
   <footer>Toque em "Ver na minha mesa" para ver o item no seu ambiente.</footer>
 
