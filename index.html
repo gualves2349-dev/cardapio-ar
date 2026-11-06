@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cardápio | Exemplo Realidade Aumentada</title>
+  <title>Cardápio Realidade Aumentada</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +24,7 @@
       --preco: #ff6b6b;
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       font-family: "Montserrat", Arial, sans-serif;
@@ -32,58 +33,81 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Topo */
-    .topo {
+    /* ============ HERO ============ */
+    .hero {
+      min-height: 70vh;
+      min-height: 70svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      padding: 40px 20px 20px;
+      padding: 64px 20px;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 0%, rgba(217, 31, 46, 0.35), transparent 70%),
+        radial-gradient(ellipse 50% 40% at 85% 100%, rgba(255, 107, 107, 0.12), transparent 70%),
+        var(--fundo);
+      border-bottom: 1px solid #2c2522;
     }
-    .topo h1 {
+    .hero h1 {
       margin: 0;
-      font-size: clamp(28px, 6vw, 44px);
+      max-width: 14ch;
+      font-size: clamp(38px, 9vw, 84px);
       font-weight: 800;
-      letter-spacing: -0.5px;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
     }
-    .topo p {
-      margin: 8px 0 0;
+    .hero p {
+      margin: 20px 0 0;
+      max-width: 36ch;
+      font-size: clamp(15px, 2.4vw, 19px);
+      line-height: 1.5;
       color: var(--texto-suave);
+    }
+    .hero .botao-ar {
+      margin-top: 32px;
+      width: auto;
+      max-width: none;
+      padding: 14px 28px;
       font-size: 15px;
+      text-decoration: none;
     }
 
+    /* ============ LISTA ============ */
     main {
       max-width: 1100px;
       margin: 0 auto;
       padding: 10px 16px 60px;
     }
     .categoria {
-      margin: 28px 4px 16px;
-      font-size: 22px;
+      margin: 40px 4px 16px;
+      font-size: clamp(20px, 3vw, 26px);
       font-weight: 800;
+      scroll-margin-top: 16px;
     }
 
-    /* Grade de pratos */
     .grade {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr));
       gap: 16px;
     }
 
-    /* Cartão do prato: texto à esquerda, objeto 3D à direita */
+    /* Cartão: texto à esquerda, objeto 3D à direita */
     .prato {
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: center;
-      min-height: 220px;
+      min-height: 260px;
       border-radius: 14px;
       overflow: hidden;
       background: linear-gradient(100deg, var(--cartao-b) 30%, var(--cartao-a) 100%);
       border: 1px solid #2c2522;
     }
-    .prato-info {
-      padding: 24px 8px 24px 24px;
-    }
+    .prato-info { padding: 24px 8px 24px 24px; }
     .prato-info h3 {
       margin: 0;
-      font-size: 22px;
+      font-size: clamp(18px, 2.4vw, 22px);
       font-weight: 800;
       line-height: 1.2;
     }
@@ -130,20 +154,49 @@
       color: var(--texto-suave);
     }
 
-    /* Objeto 3D */
-    .prato model-viewer {
+    /* Área do objeto 3D (pré-visualização interativa) */
+    .visor {
+      position: relative;
+      align-self: stretch;
+      min-height: 260px;
+    }
+    .visor model-viewer {
       width: 100%;
       height: 100%;
-      min-height: 220px;
+      min-height: 260px;
       --poster-color: transparent;
       background: transparent;
+      cursor: grab;
+      /* Arrastar para os lados gira o objeto; deslizar para cima/baixo rola a página */
+      touch-action: pan-y;
     }
+    .visor model-viewer:active { cursor: grabbing; }
+    .dica {
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      transform: translateX(-50%);
+      padding: 4px 10px;
+      font-size: 11px;
+      white-space: nowrap;
+      color: var(--texto-suave);
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 999px;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .visor.mexeu .dica { opacity: 0; }
 
-    /* Celulares pequenos */
-    @media (max-width: 420px) {
-      .prato-info { padding: 18px 4px 18px 16px; }
-      .prato-info h3 { font-size: 18px; }
-      .prato-info .preco { font-size: 18px; }
+    /* Tablets e celulares: objeto 3D em cima, texto embaixo */
+    @media (max-width: 560px) {
+      .prato { grid-template-columns: 1fr; }
+      .visor { order: -1; min-height: 240px; }
+      .visor model-viewer { min-height: 240px; }
+      .prato-info { padding: 4px 20px 22px; }
+      .prato-info .botao-ar { max-width: none; }
+    }
+    @media (max-width: 360px) {
+      .hero { padding: 48px 16px; }
       .botao-ar { font-size: 13px; padding: 11px 12px; }
     }
 
@@ -157,13 +210,15 @@
 </head>
 <body>
 
-  <header class="topo">
-    <h1>Cardapio Realidade Aumentada</h1>
-    <p>Escolha seu item e veja como ele fica na sua mesa.</p>
+  <!-- Hero genérico (depois é só trocar o título, o texto e o botão) -->
+  <header class="hero">
+    <h1>Cardápio Realidade Aumentada</h1>
+    <p>Gire os itens aqui na tela e depois veja como ficam na sua mesa.</p>
+    <a class="botao-ar" href="#itens">Ver itens</a>
   </header>
 
   <main>
-    <h2 class="categoria">Itens</h2>
+    <h2 class="categoria" id="itens">Itens</h2>
 
     <div class="grade">
 
@@ -183,27 +238,30 @@
           </button>
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
-        
-      <model-viewer
-          src="modelos/bolo.glb"
-          alt="Bolo de chocolate em 3D"
-          ar
-          ar-modes="webxr scene-viewer quick-look"
-          ar-scale="fixed"
-          camera-orbit="0deg 70deg auto"
-          min-camera-orbit="0deg 70deg auto"
-          max-camera-orbit="0deg 70deg auto"
-          disable-zoom
-          disable-pan
-          interaction-prompt="none"
-          shadow-intensity="1"
-          loading="lazy">
-          <button slot="ar-button" style="display:none" aria-hidden="true"></button>
-        </model-viewer>
-        
+
+        <div class="visor">
+          <model-viewer
+            src="modelos/bolo.glb"
+            alt="Bolo de chocolate em 3D"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            ar-scale="fixed"
+            camera-controls
+            auto-rotate
+            auto-rotate-delay="2000"
+            camera-orbit="0deg 70deg auto"
+            disable-zoom
+            disable-pan
+            interaction-prompt="none"
+            shadow-intensity="1"
+            loading="lazy">
+            <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+          </model-viewer>
+          <span class="dica">Arraste para girar</span>
+        </div>
       </article>
-<!-- ============ FIM ITEM: Bolo ============ --> 
-      
+<!-- ============ FIM ITEM: Bolo ============ -->
+
 <!-- ============ ITEM: Controle ============ -->
       <article class="prato">
         <div class="prato-info">
@@ -219,26 +277,30 @@
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
 
-        <model-viewer
-          src="modelos/controle.glb"
-          alt="Controle Split Samsung em 3D"
-          ar
-          ar-modes="webxr scene-viewer quick-look"
-          ar-scale="fixed"
-          camera-orbit="0deg 90deg auto"
-          min-camera-orbit="0deg 90deg auto"
-          max-camera-orbit="0deg 90deg auto"
-          disable-zoom
-          disable-pan
-          interaction-prompt="none"
-          shadow-intensity="1"
-          loading="lazy">
-          <button slot="ar-button" style="display:none" aria-hidden="true"></button>
-        </model-viewer>
+        <div class="visor">
+          <model-viewer
+            src="modelos/controle.glb"
+            alt="Controle Split Samsung em 3D"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            ar-scale="fixed"
+            camera-controls
+            auto-rotate
+            auto-rotate-delay="2000"
+            camera-orbit="0deg 90deg auto"
+            disable-zoom
+            disable-pan
+            interaction-prompt="none"
+            shadow-intensity="1"
+            loading="lazy">
+            <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+          </model-viewer>
+          <span class="dica">Arraste para girar</span>
+        </div>
       </article>
 <!-- ============ FIM ITEM: Controle ============ -->
-      
-<!-- ============ ITEM: Mouse ============ -->      
+
+<!-- ============ ITEM: Mouse ============ -->
       <article class="prato">
         <div class="prato-info">
           <h3>Mouse Logitech Bluetooth</h3>
@@ -252,31 +314,35 @@
           </button>
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
-        
-      <model-viewer
-          src="modelos/mouse.glb"
-          alt="Mouse Logitech em 3D"
-          ar
-          ar-modes="webxr scene-viewer quick-look"
-          ar-scale="fixed"
-          camera-orbit="0deg 70deg auto"
-          min-camera-orbit="0deg 70deg auto"
-          max-camera-orbit="0deg 70deg auto"
-          disable-zoom
-          disable-pan
-          interaction-prompt="none"
-          shadow-intensity="1"
-          loading="lazy">
-          <button slot="ar-button" style="display:none" aria-hidden="true"></button>
-        </model-viewer>
+
+        <div class="visor">
+          <model-viewer
+            src="modelos/mouse.glb"
+            alt="Mouse Logitech em 3D"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            ar-scale="fixed"
+            camera-controls
+            auto-rotate
+            auto-rotate-delay="2000"
+            camera-orbit="0deg 70deg auto"
+            disable-zoom
+            disable-pan
+            interaction-prompt="none"
+            shadow-intensity="1"
+            loading="lazy">
+            <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+          </model-viewer>
+          <span class="dica">Arraste para girar</span>
+        </div>
       </article>
 <!-- ============ FIM ITEM: Mouse ============ -->
 
-<!-- ============ ITEM: Relogio ============ -->       
+<!-- ============ ITEM: Relogio ============ -->
       <article class="prato">
         <div class="prato-info">
-          <h3>Relogio Tag Heuer F1</h3>
-          <p class="descricao">Relogio Tag Heuer F1.</p>
+          <h3>Relógio Tag Heuer F1</h3>
+          <p class="descricao">Relógio Tag Heuer F1.</p>
           <span class="preco">R$ 250,00</span>
           <button class="botao-ar" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -286,27 +352,31 @@
           </button>
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
-        
-      <model-viewer
-          src="modelos/relogio.glb"
-          alt="Relogio Tag Heuer F1 em 3D "
-          ar
-          ar-modes="webxr scene-viewer quick-look"
-          ar-scale="fixed"
-          camera-orbit="0deg 70deg auto"
-          min-camera-orbit="0deg 70deg auto"
-          max-camera-orbit="0deg 70deg auto"
-          disable-zoom
-          disable-pan
-          interaction-prompt="none"
-          shadow-intensity="1"
-          loading="lazy">
-          <button slot="ar-button" style="display:none" aria-hidden="true"></button>
-        </model-viewer>        
-      </article>
-<!-- ============ FIMITEM: Relogio ============ --> 
 
-<!-- ============ ITEM: Fone ============ -->       
+        <div class="visor">
+          <model-viewer
+            src="modelos/relogio.glb"
+            alt="Relógio Tag Heuer F1 em 3D"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            ar-scale="fixed"
+            camera-controls
+            auto-rotate
+            auto-rotate-delay="2000"
+            camera-orbit="0deg 70deg auto"
+            disable-zoom
+            disable-pan
+            interaction-prompt="none"
+            shadow-intensity="1"
+            loading="lazy">
+            <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+          </model-viewer>
+          <span class="dica">Arraste para girar</span>
+        </div>
+      </article>
+<!-- ============ FIM ITEM: Relogio ============ -->
+
+<!-- ============ ITEM: Fone ============ -->
       <article class="prato">
         <div class="prato-info">
           <h3>Fone Bluetooth QCY</h3>
@@ -320,44 +390,55 @@
           </button>
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
-        
-      <model-viewer
-          src="modelos/fone.glb"
-          alt="Fone Bluetooth QCY em 3D"
-          ar
-          ar-modes="webxr scene-viewer quick-look"
-          ar-scale="fixed"
-          camera-orbit="0deg 70deg auto"
-          min-camera-orbit="0deg 70deg auto"
-          max-camera-orbit="0deg 70deg auto"
-          disable-zoom
-          disable-pan
-          interaction-prompt="none"
-          shadow-intensity="1"
-          loading="lazy">
-          <button slot="ar-button" style="display:none" aria-hidden="true"></button>
-        </model-viewer>        
+
+        <div class="visor">
+          <model-viewer
+            src="modelos/fone.glb"
+            alt="Fone Bluetooth QCY em 3D"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            ar-scale="fixed"
+            camera-controls
+            auto-rotate
+            auto-rotate-delay="2000"
+            camera-orbit="0deg 70deg auto"
+            disable-zoom
+            disable-pan
+            interaction-prompt="none"
+            shadow-intensity="1"
+            loading="lazy">
+            <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+          </model-viewer>
+          <span class="dica">Arraste para girar</span>
+        </div>
       </article>
-<!-- ============ FIMITEM: Relogio ============ --> 
-      
+<!-- ============ FIM ITEM: Fone ============ -->
+
     </div>
   </main>
-  
 
   <footer>Toque em "Ver na minha mesa" para ver o item no seu ambiente.</footer>
 
   <script>
-    // Liga cada botão vermelho ao objeto 3D do mesmo cartão
     document.querySelectorAll('.prato').forEach(function (cartao) {
+      var visor = cartao.querySelector('.visor');
       var viewer = cartao.querySelector('model-viewer');
       var botao = cartao.querySelector('.botao-ar');
       var aviso = cartao.querySelector('.aviso');
 
+      // Botão vermelho abre a realidade aumentada
       botao.addEventListener('click', function () {
         if (viewer.canActivateAR) {
           viewer.activateAR();
         } else {
           aviso.textContent = 'Abra este cardápio no celular para ver o item na sua mesa.';
+        }
+      });
+
+      // Esconde a dica "Arraste para girar" depois da primeira interação
+      viewer.addEventListener('camera-change', function (e) {
+        if (e.detail && e.detail.source === 'user-interaction') {
+          visor.classList.add('mexeu');
         }
       });
 
