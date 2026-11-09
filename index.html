@@ -187,6 +187,76 @@
     }
     .visor.mexeu .dica { opacity: 0; }
 
+    /* ============ MENU DE CATEGORIAS ============ */
+    .categorias {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(21, 18, 16, 0.88);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #2c2522;
+    }
+    .categorias ul {
+      position: relative;
+      display: flex;
+      gap: 10px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      list-style: none;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .categorias ul::-webkit-scrollbar { display: none; }
+    .categorias a {
+      display: block;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      text-decoration: none;
+      color: var(--texto-suave);
+      border: 1px solid #3a312d;
+      border-radius: 999px;
+      transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .categorias a:hover { color: var(--texto); border-color: var(--vermelho); }
+    .categorias a.ativa {
+      color: #fff;
+      background: var(--vermelho);
+      border-color: var(--vermelho);
+    }
+    .categorias a:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+    @media (min-width: 700px) {
+      .categorias ul { justify-content: center; }
+    }
+
+    /* ============ SEÇÕES DE CATEGORIA ============ */
+    .secao { scroll-margin-top: 64px; }
+    .secao-topo { margin: 40px 4px 16px; }
+    .secao-topo .categoria { margin: 0; }
+    .secao-sub {
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: var(--texto-suave);
+    }
+
+    /* Aviso "em breve": aparece sozinho enquanto a categoria não tem nenhum
+       item e some automaticamente quando você adiciona o primeiro <article class="prato"> */
+    .vazio {
+      padding: 36px 20px;
+      text-align: center;
+      border: 1px dashed #3a312d;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .vazio strong { display: block; font-size: 16px; font-weight: 800; }
+    .vazio span { display: block; margin-top: 6px; font-size: 13px; color: var(--texto-suave); }
+    .secao:has(.prato) .vazio { display: none; }
+    /* Se um dia o navegador não suportar :has, o aviso só ficará visível, sem quebrar nada. */
+
     /* Tablets e celulares: objeto 3D em cima, texto embaixo */
     @media (max-width: 560px) {
       .prato { grid-template-columns: 1fr; }
@@ -214,13 +284,365 @@
   <header class="hero">
     <h1>Cardápio Realidade Aumentada</h1>
     <p>Gire os itens aqui na tela e depois veja como ficam na sua mesa.</p>
-    <a class="botao-ar" href="#itens">Ver itens</a>
+    <a class="botao-ar" href="#categorias">Ver categorias</a>
   </header>
 
+
+  <!-- ============ MENU DE CATEGORIAS (fixo no topo ao rolar) ============
+       Cada link aponta para o id de uma seção abaixo (ex.: href="#pizzas" -> <section id="pizzas">).
+       Para renomear uma categoria, troque o texto aqui E o título (<h2>) dentro da seção.
+       Para criar uma nova: copie um <li>, uma <section> inteira e troque o id nos dois lugares. -->
+  <nav class="categorias" id="categorias" aria-label="Categorias do cardápio">
+    <ul>
+      <li><a href="#moveis">Móveis</a></li>
+      <li><a href="#pizzas">Pizzas</a></li>
+      <li><a href="#lanches">Lanches Tradicionais</a></li>
+      <li><a href="#bolos-tortas">Bolos e Tortas</a></li>
+      <li><a href="#empadao">Empadão</a></li>
+    </ul>
+  </nav>
+
   <main>
-    <h2 class="categoria" id="itens">Itens</h2>
+
+  <!-- ╔══════════════════════════════════════════════════════════════╗
+       ║  GUIA RÁPIDO DO CARDÁPIO                                     ║
+       ╚══════════════════════════════════════════════════════════════╝
+       ESTRUTURA DA PÁGINA (de cima para baixo):
+         1. <header class="hero">        -> topo com título
+         2. <nav class="categorias">     -> menu fixo com as 5 categorias
+         3. <main>                       -> uma <section> por categoria
+              <section id="...">         -> título + descrição da categoria
+                <div class="grade">      -> AQUI DENTRO vão os blocos <article class="prato">
+                <div class="vazio">      -> aviso "em breve" (some sozinho)
+         4. <footer>
+
+       ONDE COLOCAR UM NOVO ITEM .glb:
+         -> dentro do <div class="grade"> da categoria certa.
+         -> procure o comentário "COLOQUE OS ITENS DE ... AQUI" em cada seção.
+
+       ARQUIVOS .glb: ficam na pasta "modelos/" e são chamados pelo atributo src="modelos/nome.glb". -->
+
+  <!-- ╔══════════════════════════════════════════════════════════════╗
+       ║  CATEGORIA: MÓVEIS                                          ║
+       ╚══════════════════════════════════════════════════════════════╝ -->
+  <section class="secao" id="moveis" aria-labelledby="titulo-moveis">
+    <div class="secao-topo">
+      <h2 class="categoria" id="titulo-moveis">Móveis</h2>
+      <p class="secao-sub">Veja o móvel em tamanho real no seu ambiente antes de comprar.</p>
+    </div>
 
     <div class="grade">
+
+      <!-- ┌─ COLOQUE OS ITENS DE "MÓVEIS" AQUI DENTRO DESTA GRADE ─┐
+           Cada item é um bloco <article class="prato"> ... </article>.
+           Os itens aparecem na ordem em que estão escritos.
+           DICA: em móveis o tamanho real importa. Mantenha ar-scale="fixed" e exporte o .glb
+           em escala real (1 unidade = 1 metro) para ele aparecer no tamanho certo na sala.
+
+           COMO ADICIONAR (3 passos):
+             1) Vá até o bloco "EXEMPLO" logo abaixo e copie o <article> inteiro.
+             2) Cole depois do último item desta categoria (ou no lugar do exemplo).
+             3) Troque: src (nome do .glb), alt, nome (h3), descrição e preço.
+                O arquivo .glb precisa estar dentro da pasta "modelos/".
+                Para ativar o exemplo direto, apague a primeira e a última linha
+                dele (as que abrem e fecham o comentário).
+           └──────────────────────────────────────────────────────────────┘ -->
+
+      <!-- EXEMPLO (desativado) ▼ ----------------------------------------------
+        <article class="prato">
+          <div class="prato-info">
+            <h3>Sofá 3 Lugares</h3>
+            <p class="descricao">Sofá retrátil em tecido suede, 2,10 m de largura.</p>
+            <span class="preco">R$ 1.890,00</span>
+            <button class="botao-ar" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+              </svg>
+              Ver na minha mesa
+            </button>
+            <p class="aviso" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="visor">
+            <model-viewer
+              src="modelos/sofa-3-lugares.glb"
+              alt="Sofá de 3 lugares em 3D"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="fixed"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              camera-orbit="0deg 70deg auto"
+              disable-zoom
+              disable-pan
+              interaction-prompt="none"
+              shadow-intensity="1"
+              loading="lazy">
+              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+            </model-viewer>
+            <span class="dica">Arraste para girar</span>
+          </div>
+        </article>
+      ▲ FIM DO EXEMPLO ------------------------------------------------------ -->
+
+    </div>
+
+    <!-- Aviso que aparece enquanto a categoria está vazia (some sozinho ao adicionar um item) -->
+    <div class="vazio">
+      <strong>Novidades em breve</strong>
+      <span>Estamos preparando os móveis desta categoria.</span>
+    </div>
+  </section>
+<!-- ============ FIM CATEGORIA: Móveis ============ -->
+
+  <!-- ╔══════════════════════════════════════════════════════════════╗
+       ║  CATEGORIA: PIZZAS                                          ║
+       ╚══════════════════════════════════════════════════════════════╝ -->
+  <section class="secao" id="pizzas" aria-labelledby="titulo-pizzas">
+    <div class="secao-topo">
+      <h2 class="categoria" id="titulo-pizzas">Pizzas</h2>
+      <p class="secao-sub">Escolha o sabor e veja a pizza na sua mesa.</p>
+    </div>
+
+    <div class="grade">
+
+      <!-- ┌─ COLOQUE OS ITENS DE "PIZZAS" AQUI DENTRO DESTA GRADE ─┐
+           Cada item é um bloco <article class="prato"> ... </article>.
+           Os itens aparecem na ordem em que estão escritos.
+           DICA: em pizzas fica melhor vista mais de cima. Use camera-orbit="0deg 45deg auto"
+           (o exemplo já vem assim).
+
+           COMO ADICIONAR (3 passos):
+             1) Vá até o bloco "EXEMPLO" logo abaixo e copie o <article> inteiro.
+             2) Cole depois do último item desta categoria (ou no lugar do exemplo).
+             3) Troque: src (nome do .glb), alt, nome (h3), descrição e preço.
+                O arquivo .glb precisa estar dentro da pasta "modelos/".
+                Para ativar o exemplo direto, apague a primeira e a última linha
+                dele (as que abrem e fecham o comentário).
+           └──────────────────────────────────────────────────────────────┘ -->
+
+      <!-- EXEMPLO (desativado) ▼ ----------------------------------------------
+        <article class="prato">
+          <div class="prato-info">
+            <h3>Pizza de Calabresa</h3>
+            <p class="descricao">Molho artesanal, calabresa fatiada, cebola e orégano. 8 pedaços.</p>
+            <span class="preco">R$ 49,90</span>
+            <button class="botao-ar" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+              </svg>
+              Ver na minha mesa
+            </button>
+            <p class="aviso" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="visor">
+            <model-viewer
+              src="modelos/pizza-calabresa.glb"
+              alt="Pizza de calabresa em 3D"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="fixed"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              camera-orbit="0deg 45deg auto"
+              disable-zoom
+              disable-pan
+              interaction-prompt="none"
+              shadow-intensity="1"
+              loading="lazy">
+              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+            </model-viewer>
+            <span class="dica">Arraste para girar</span>
+          </div>
+        </article>
+      ▲ FIM DO EXEMPLO ------------------------------------------------------ -->
+
+    </div>
+
+    <!-- Aviso que aparece enquanto a categoria está vazia (some sozinho ao adicionar um item) -->
+    <div class="vazio">
+      <strong>Novidades em breve</strong>
+      <span>Estamos preparando o sabor dessas pizzas.</span>
+    </div>
+  </section>
+<!-- ============ FIM CATEGORIA: Pizzas ============ -->
+
+  <!-- ╔══════════════════════════════════════════════════════════════╗
+       ║  CATEGORIA: LANCHES TRADICIONAIS                            ║
+       ╚══════════════════════════════════════════════════════════════╝ -->
+  <section class="secao" id="lanches" aria-labelledby="titulo-lanches">
+    <div class="secao-topo">
+      <h2 class="categoria" id="titulo-lanches">Lanches Tradicionais</h2>
+      <p class="secao-sub">Os clássicos da casa, feitos na hora.</p>
+    </div>
+
+    <div class="grade">
+
+      <!-- ┌─ COLOQUE OS ITENS DE "LANCHES TRADICIONAIS" AQUI DENTRO DESTA GRADE ─┐
+           Cada item é um bloco <article class="prato"> ... </article>.
+           Os itens aparecem na ordem em que estão escritos.
+           O "X Coração" já está aqui como exemplo real. Novos lanches entram depois dele.
+
+           COMO ADICIONAR (3 passos):
+             1) Vá até o bloco "EXEMPLO" logo abaixo e copie o <article> inteiro.
+             2) Cole depois do último item desta categoria (ou no lugar do exemplo).
+             3) Troque: src (nome do .glb), alt, nome (h3), descrição e preço.
+                O arquivo .glb precisa estar dentro da pasta "modelos/".
+                Para ativar o exemplo direto, apague a primeira e a última linha
+                dele (as que abrem e fecham o comentário).
+           └──────────────────────────────────────────────────────────────┘ -->
+
+      <!-- EXEMPLO (desativado) ▼ ----------------------------------------------
+        <article class="prato">
+          <div class="prato-info">
+            <h3>X-Burger</h3>
+            <p class="descricao">Pão, hambúrguer, queijo, alface e tomate.</p>
+            <span class="preco">R$ 22,00</span>
+            <button class="botao-ar" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+              </svg>
+              Ver na minha mesa
+            </button>
+            <p class="aviso" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="visor">
+            <model-viewer
+              src="modelos/x-burger.glb"
+              alt="X-Burger tradicional em 3D"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="fixed"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              camera-orbit="0deg 70deg auto"
+              disable-zoom
+              disable-pan
+              interaction-prompt="none"
+              shadow-intensity="1"
+              loading="lazy">
+              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+            </model-viewer>
+            <span class="dica">Arraste para girar</span>
+          </div>
+        </article>
+      ▲ FIM DO EXEMPLO ------------------------------------------------------ -->
+
+<!-- ============ ITEM: xcoracao ============ -->
+      <article class="prato">
+        <div class="prato-info">
+          <h3>X Coração</h3>
+          <p class="descricao">X Coração.</p>
+          <span class="preco">R$ 30,00</span>
+          <button class="botao-ar" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+            </svg>
+            Ver na minha mesa
+          </button>
+          <p class="aviso" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="visor">
+          <model-viewer
+            src="modelos/xcoracao.glb"
+            alt="X Coração em 3D"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            ar-scale="fixed"
+            camera-controls
+            auto-rotate
+            auto-rotate-delay="2000"
+            camera-orbit="0deg 70deg auto"
+            disable-zoom
+            disable-pan
+            interaction-prompt="none"
+            shadow-intensity="1"
+            loading="lazy">
+            <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+          </model-viewer>
+          <span class="dica">Arraste para girar</span>
+        </div>
+      </article>
+<!-- ============ FIM ITEM: xcoracao ============ -->      
+
+    </div>
+
+    <!-- Aviso que aparece enquanto a categoria está vazia (some sozinho ao adicionar um item) -->
+    <div class="vazio">
+      <strong>Novidades em breve</strong>
+      <span>Estamos preparando os lanches desta categoria.</span>
+    </div>
+  </section>
+<!-- ============ FIM CATEGORIA: Lanches Tradicionais ============ -->
+
+  <!-- ╔══════════════════════════════════════════════════════════════╗
+       ║  CATEGORIA: BOLOS E TORTAS                                  ║
+       ╚══════════════════════════════════════════════════════════════╝ -->
+  <section class="secao" id="bolos-tortas" aria-labelledby="titulo-bolos-tortas">
+    <div class="secao-topo">
+      <h2 class="categoria" id="titulo-bolos-tortas">Bolos e Tortas</h2>
+      <p class="secao-sub">Fatias e tortas inteiras para adoçar o dia.</p>
+    </div>
+
+    <div class="grade">
+
+      <!-- ┌─ COLOQUE OS ITENS DE "BOLOS E TORTAS" AQUI DENTRO DESTA GRADE ─┐
+           Cada item é um bloco <article class="prato"> ... </article>.
+           Os itens aparecem na ordem em que estão escritos.
+           A "Fatia de Bolo de Chocolate" já está aqui como exemplo real. Novos itens entram depois dela.
+
+           COMO ADICIONAR (3 passos):
+             1) Vá até o bloco "EXEMPLO" logo abaixo e copie o <article> inteiro.
+             2) Cole depois do último item desta categoria (ou no lugar do exemplo).
+             3) Troque: src (nome do .glb), alt, nome (h3), descrição e preço.
+                O arquivo .glb precisa estar dentro da pasta "modelos/".
+                Para ativar o exemplo direto, apague a primeira e a última linha
+                dele (as que abrem e fecham o comentário).
+           └──────────────────────────────────────────────────────────────┘ -->
+
+      <!-- EXEMPLO (desativado) ▼ ----------------------------------------------
+        <article class="prato">
+          <div class="prato-info">
+            <h3>Fatia de Torta de Limão</h3>
+            <p class="descricao">Base crocante, creme de limão e merengue maçaricado.</p>
+            <span class="preco">R$ 16,00</span>
+            <button class="botao-ar" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+              </svg>
+              Ver na minha mesa
+            </button>
+            <p class="aviso" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="visor">
+            <model-viewer
+              src="modelos/torta-limao.glb"
+              alt="Fatia de torta de limão em 3D"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="fixed"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              camera-orbit="0deg 70deg auto"
+              disable-zoom
+              disable-pan
+              interaction-prompt="none"
+              shadow-intensity="1"
+              loading="lazy">
+              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+            </model-viewer>
+            <span class="dica">Arraste para girar</span>
+          </div>
+        </article>
+      ▲ FIM DO EXEMPLO ------------------------------------------------------ -->
 
 <!-- ============ ITEM: Fatia de bolo ============
            Para adicionar outro item, copie este bloco <article> inteiro,
@@ -261,6 +683,102 @@
         </div>
       </article>
 <!-- ============ FIM ITEM: Bolo ============ -->
+
+    </div>
+
+    <!-- Aviso que aparece enquanto a categoria está vazia (some sozinho ao adicionar um item) -->
+    <div class="vazio">
+      <strong>Novidades em breve</strong>
+      <span>Estamos preparando os bolos e tortas desta categoria.</span>
+    </div>
+  </section>
+<!-- ============ FIM CATEGORIA: Bolos e Tortas ============ -->
+
+  <!-- ╔══════════════════════════════════════════════════════════════╗
+       ║  CATEGORIA: EMPADÃO                                         ║
+       ╚══════════════════════════════════════════════════════════════╝ -->
+  <section class="secao" id="empadao" aria-labelledby="titulo-empadao">
+    <div class="secao-topo">
+      <h2 class="categoria" id="titulo-empadao">Empadão</h2>
+      <p class="secao-sub">Massa amanteigada e recheio generoso.</p>
+    </div>
+
+    <div class="grade">
+
+      <!-- ┌─ COLOQUE OS ITENS DE "EMPADÃO" AQUI DENTRO DESTA GRADE ─┐
+           Cada item é um bloco <article class="prato"> ... </article>.
+           Os itens aparecem na ordem em que estão escritos.
+           DICA: se vender fatia e inteiro, crie dois itens separados (ex.: "Fatia" e "Inteiro"),
+           cada um com o seu .glb e o seu preço.
+
+           COMO ADICIONAR (3 passos):
+             1) Vá até o bloco "EXEMPLO" logo abaixo e copie o <article> inteiro.
+             2) Cole depois do último item desta categoria (ou no lugar do exemplo).
+             3) Troque: src (nome do .glb), alt, nome (h3), descrição e preço.
+                O arquivo .glb precisa estar dentro da pasta "modelos/".
+                Para ativar o exemplo direto, apague a primeira e a última linha
+                dele (as que abrem e fecham o comentário).
+           └──────────────────────────────────────────────────────────────┘ -->
+
+      <!-- EXEMPLO (desativado) ▼ ----------------------------------------------
+        <article class="prato">
+          <div class="prato-info">
+            <h3>Empadão de Frango</h3>
+            <p class="descricao">Massa amanteigada com frango desfiado, catupiry e milho.</p>
+            <span class="preco">R$ 18,00</span>
+            <button class="botao-ar" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+              </svg>
+              Ver na minha mesa
+            </button>
+            <p class="aviso" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="visor">
+            <model-viewer
+              src="modelos/empadao-frango.glb"
+              alt="Empadão de frango em 3D"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="fixed"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              camera-orbit="0deg 70deg auto"
+              disable-zoom
+              disable-pan
+              interaction-prompt="none"
+              shadow-intensity="1"
+              loading="lazy">
+              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+            </model-viewer>
+            <span class="dica">Arraste para girar</span>
+          </div>
+        </article>
+      ▲ FIM DO EXEMPLO ------------------------------------------------------ -->
+
+    </div>
+
+    <!-- Aviso que aparece enquanto a categoria está vazia (some sozinho ao adicionar um item) -->
+    <div class="vazio">
+      <strong>Novidades em breve</strong>
+      <span>Estamos preparando os empadões desta categoria.</span>
+    </div>
+  </section>
+<!-- ============ FIM CATEGORIA: Empadão ============ -->
+
+  <!-- ╔══════════════════════════════════════════════════════════════╗
+       ║  ITENS DE TESTE (fora do menu de categorias)                 ║
+       ╚══════════════════════════════════════════════════════════════╝
+       Estes itens não pertencem a nenhuma das 5 categorias.
+       Mova cada bloco <article> para a categoria certa acima, ou apague
+       esta seção inteira (de <section> até </section>) quando não precisar mais. -->
+  <section class="secao" id="testes" aria-labelledby="titulo-testes">
+    <div class="secao-topo">
+      <h2 class="categoria" id="titulo-testes">Outros itens</h2>
+    </div>
+    <div class="grade">
 
 <!-- ============ ITEM: Controle ============ -->
       <article class="prato">
@@ -490,48 +1008,13 @@
       </article>
 <!-- ============ FIM ITEM: PF de Picanha ============ -->
 
-<!-- ============ ITEM: xcoracao ============ -->
-      <article class="prato">
-        <div class="prato-info">
-          <h3>X Coração</h3>
-          <p class="descricao">X Coração.</p>
-          <span class="preco">R$ 30,00</span>
-          <button class="botao-ar" type="button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
-            </svg>
-            Ver na minha mesa
-          </button>
-          <p class="aviso" role="status" aria-live="polite"></p>
-        </div>
-
-        <div class="visor">
-          <model-viewer
-            src="modelos/xcoracao.glb"
-            alt="X Coração em 3D"
-            ar
-            ar-modes="webxr scene-viewer quick-look"
-            ar-scale="fixed"
-            camera-controls
-            auto-rotate
-            auto-rotate-delay="2000"
-            camera-orbit="0deg 70deg auto"
-            disable-zoom
-            disable-pan
-            interaction-prompt="none"
-            shadow-intensity="1"
-            loading="lazy">
-            <button slot="ar-button" style="display:none" aria-hidden="true"></button>
-          </model-viewer>
-          <span class="dica">Arraste para girar</span>
-        </div>
-      </article>
-<!-- ============ FIM ITEM: xcoracao ============ -->      
-      
     </div>
+  </section>
+<!-- ============ FIM: itens de teste ============ -->
   </main>
 
   <footer>Toque em "Ver na minha mesa" para ver o item no seu ambiente.</footer>
+
 
   <script>
     document.querySelectorAll('.prato').forEach(function (cartao) {
@@ -561,6 +1044,34 @@
         viewer.removeAttribute('auto-rotate');
       }
     });
+
+    // Menu de categorias: destaca a categoria que está na tela enquanto você rola
+    (function () {
+      var lista = document.querySelector('.categorias ul');
+      var links = Array.prototype.slice.call(document.querySelectorAll('.categorias a'));
+      if (!lista || !links.length || !('IntersectionObserver' in window)) return;
+
+      var porId = {};
+      links.forEach(function (a) { porId[a.getAttribute('href').slice(1)] = a; });
+
+      var obs = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          links.forEach(function (a) { a.classList.remove('ativa'); a.removeAttribute('aria-current'); });
+          var ativo = porId[e.target.id];
+          if (!ativo) return;
+          ativo.classList.add('ativa');
+          ativo.setAttribute('aria-current', 'true');
+          // mantém o botão ativo visível no menu (sem rolar a página)
+          lista.scrollTo({ left: ativo.offsetLeft - (lista.clientWidth - ativo.offsetWidth) / 2, behavior: 'smooth' });
+        });
+      }, { rootMargin: '-30% 0px -60% 0px' });
+
+      Object.keys(porId).forEach(function (id) {
+        var s = document.getElementById(id);
+        if (s) obs.observe(s);
+      });
+    })();
   </script>
 
 </body>
