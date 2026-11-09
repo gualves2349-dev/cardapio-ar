@@ -235,6 +235,16 @@
 
     /* ============ SEÇÕES DE CATEGORIA ============ */
     .secao { scroll-margin-top: 64px; }
+    .secao[hidden] { display: none; }          /* categoria escondida pelo filtro */
+    main { min-height: 70vh; }                 /* evita o rodapé "pular" em categorias com poucos itens */
+
+    /* Pequeno fade ao trocar de categoria */
+    @keyframes aparecer { from { opacity: 0; } to { opacity: 1; } }
+    .secao.entrando { animation: aparecer 0.3s ease both; }
+    @media (prefers-reduced-motion: reduce) {
+      .secao.entrando { animation: none; }
+      html { scroll-behavior: auto; }
+    }
     .secao-topo { margin: 40px 4px 16px; }
     .secao-topo .categoria { margin: 0; }
     .secao-sub {
@@ -289,11 +299,20 @@
 
 
   <!-- ============ MENU DE CATEGORIAS (fixo no topo ao rolar) ============
+       FUNCIONAMENTO: ao clicar em uma categoria, a página mostra SÓ os itens dela.
+       "Todos" mostra todas as categorias juntas, uma abaixo da outra.
+
        Cada link aponta para o id de uma seção abaixo (ex.: href="#pizzas" -> <section id="pizzas">).
-       Para renomear uma categoria, troque o texto aqui E o título (<h2>) dentro da seção.
-       Para criar uma nova: copie um <li>, uma <section> inteira e troque o id nos dois lugares. -->
+       O link "Todos" (href="#todos") é especial: não tem seção própria, ele mostra todas.
+
+       PARA CRIAR UMA NOVA CATEGORIA:
+         1) Copie um <li> daqui e troque o href e o texto.
+         2) Copie uma <section> inteira lá embaixo e troque o id (o mesmo do href) e o título.
+         3) Pronto: o filtro e o "Todos" passam a incluir a nova categoria sozinhos.
+       PARA RENOMEAR: troque o texto do botão aqui E o título (<h2>) dentro da seção. -->
   <nav class="categorias" id="categorias" aria-label="Categorias do cardápio">
     <ul>
+      <li><a href="#todos" class="ativa" aria-current="true">Todos</a></li>
       <li><a href="#moveis">Móveis</a></li>
       <li><a href="#pizzas">Pizzas</a></li>
       <li><a href="#lanches">Lanches Tradicionais</a></li>
@@ -302,19 +321,25 @@
     </ul>
   </nav>
 
-  <main>
+  <main id="todos">
 
   <!-- ╔══════════════════════════════════════════════════════════════╗
        ║  GUIA RÁPIDO DO CARDÁPIO                                     ║
        ╚══════════════════════════════════════════════════════════════╝
        ESTRUTURA DA PÁGINA (de cima para baixo):
          1. <header class="hero">        -> topo com título
-         2. <nav class="categorias">     -> menu fixo com as 5 categorias
+         2. <nav class="categorias">     -> menu fixo: "Todos" + as 5 categorias (filtro)
          3. <main>                       -> uma <section> por categoria
               <section id="...">         -> título + descrição da categoria
                 <div class="grade">      -> AQUI DENTRO vão os blocos <article class="prato">
                 <div class="vazio">      -> aviso "em breve" (some sozinho)
          4. <footer>
+
+       FILTRO: o JavaScript no final do arquivo esconde/mostra as <section>.
+         - "Todos": mostra todas as seções que têm pelo menos um item.
+         - Uma categoria: mostra apenas a <section> daquele id.
+         - O endereço aceita atalho: seusite.com/index.html#pizzas abre direto em Pizzas
+           (útil para QR Code ou link no Instagram de uma categoria específica).
 
        ONDE COLOCAR UM NOVO ITEM .glb:
          -> dentro do <div class="grade"> da categoria certa.
@@ -351,8 +376,8 @@
 
         <article class="prato">
           <div class="prato-info">
-            <h3>Movel Banheiro</h3>
-            <p class="descricao">Movel Banheiro</p>
+            <h3>Móvel Banheiro</h3>
+            <p class="descricao">Móvel Banheiro.</p>
             <span class="preco">R$ 1.890,00</span>
             <button class="botao-ar" type="button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -366,7 +391,7 @@
           <div class="visor">
             <model-viewer
               src="modelos/movelbanheiro.glb"
-              alt="Movel banheiro"
+              alt="Móvel de banheiro em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
               ar-scale="fixed"
@@ -476,7 +501,7 @@
           <div class="visor">
             <model-viewer
               src="modelos/pizzacaazeitona.glb"
-              alt="Pizza de calabresa e Azeitona em 3D"
+              alt="Pizza de calabresa com azeitona em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
               ar-scale="fixed"
@@ -498,7 +523,7 @@
 <article class="prato">
           <div class="prato-info">
             <h3>Pizza de Cogumelo e Tomilho</h3>
-            <p class="descricao">Molho artesanal, Mussarela, Cogumelos Paris, e orégano. 8 pedaços.</p>
+            <p class="descricao">Molho artesanal, Mussarela, cogumelos Paris e orégano. 8 pedaços.</p>
             <span class="preco">R$ 49,90</span>
             <button class="botao-ar" type="button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -512,7 +537,7 @@
           <div class="visor">
             <model-viewer
               src="modelos/pizzacogutom.glb"
-              alt="Pizza de Cogumelo em 3D"
+              alt="Pizza de Cogumelo e Tomilho em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
               ar-scale="fixed"
@@ -681,8 +706,8 @@
       
         <article class="prato">
           <div class="prato-info">
-            <h3>Torta Tres Chocolates</h3>
-            <p class="descricao">Base crocante e três chcolates.</p>
+            <h3>Torta Três Chocolates</h3>
+            <p class="descricao">Base crocante e três chocolates.</p>
             <span class="preco">R$ 160,00</span>
             <button class="botao-ar" type="button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -696,7 +721,7 @@
           <div class="visor">
             <model-viewer
               src="modelos/treschocolates.glb"
-              alt="Torta Tres Chocolates em 3D"
+              alt="Torta Três Chocolates em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
               ar-scale="fixed"
@@ -718,7 +743,7 @@
         <article class="prato">
           <div class="prato-info">
             <h3>Torta Trufada</h3>
-            <p class="descricao">Torta de chocolate trufado com Morango</p>
+            <p class="descricao">Torta de chocolate trufado com morango.</p>
             <span class="preco">R$ 160,00</span>
             <button class="botao-ar" type="button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -768,7 +793,7 @@
           <div class="visor">
             <model-viewer
               src="modelos/tortatresamores.glb"
-              alt="Bolo Tres Amores em 3D"
+              alt="Bolo Três Amores em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
               ar-scale="fixed"
@@ -939,8 +964,8 @@
 
         <article class="prato">
           <div class="prato-info">
-            <h3>Empadão de Brocolis</h3>
-            <p class="descricao">Massa amanteigada com brocolis, tomate, catupiry e milho.</p>
+            <h3>Empadão de Brócolis</h3>
+            <p class="descricao">Massa amanteigada com brócolis, tomate, catupiry e milho.</p>
             <span class="preco">R$ 180,00</span>
             <button class="botao-ar" type="button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -954,7 +979,7 @@
           <div class="visor">
             <model-viewer
               src="modelos/empadaodebrocolis.glb"
-              alt="Empadão de Brocolis em 3D"
+              alt="Empadão de Brócolis em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
               ar-scale="fixed"
@@ -1260,32 +1285,77 @@
       }
     });
 
-    // Menu de categorias: destaca a categoria que está na tela enquanto você rola
+    // ============ FILTRO DE CATEGORIAS ============
+    // "Todos" mostra tudo; cada categoria mostra apenas os itens dela.
     (function () {
-      var lista = document.querySelector('.categorias ul');
-      var links = Array.prototype.slice.call(document.querySelectorAll('.categorias a'));
-      if (!lista || !links.length || !('IntersectionObserver' in window)) return;
+      var nav = document.querySelector('.categorias');
+      var lista = nav.querySelector('ul');
+      var links = Array.prototype.slice.call(nav.querySelectorAll('a'));
+      var secoes = Array.prototype.slice.call(document.querySelectorAll('main .secao'));
+      var main = document.querySelector('main');
+      var reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      var porId = {};
-      links.forEach(function (a) { porId[a.getAttribute('href').slice(1)] = a; });
+      var ids = links.map(function (a) { return a.getAttribute('href').slice(1); });
 
-      var obs = new IntersectionObserver(function (entradas) {
-        entradas.forEach(function (e) {
-          if (!e.isIntersecting) return;
-          links.forEach(function (a) { a.classList.remove('ativa'); a.removeAttribute('aria-current'); });
-          var ativo = porId[e.target.id];
-          if (!ativo) return;
-          ativo.classList.add('ativa');
-          ativo.setAttribute('aria-current', 'true');
-          // mantém o botão ativo visível no menu (sem rolar a página)
-          lista.scrollTo({ left: ativo.offsetLeft - (lista.clientWidth - ativo.offsetWidth) / 2, behavior: 'smooth' });
+      function aplicar(id, rolar) {
+        // Mostra/esconde as seções
+        secoes.forEach(function (s) {
+          var temItem = !!s.querySelector('.prato');
+          var mostrar = (id === 'todos') ? temItem : (s.id === id);
+          if (mostrar && s.hidden) {          // reinicia o fade só em quem acabou de aparecer
+            s.hidden = false;
+            s.classList.remove('entrando');
+            void s.offsetWidth;
+            s.classList.add('entrando');
+          } else {
+            s.hidden = !mostrar;
+          }
         });
-      }, { rootMargin: '-30% 0px -60% 0px' });
 
-      Object.keys(porId).forEach(function (id) {
-        var s = document.getElementById(id);
-        if (s) obs.observe(s);
+        // Destaca o botão ativo
+        links.forEach(function (a) {
+          var ativo = a.getAttribute('href') === '#' + id;
+          a.classList.toggle('ativa', ativo);
+          if (ativo) {
+            a.setAttribute('aria-current', 'true');
+            // mantém o botão ativo visível no menu (sem rolar a página)
+            lista.scrollTo({ left: a.offsetLeft - (lista.clientWidth - a.offsetWidth) / 2, behavior: reduzir ? 'auto' : 'smooth' });
+          } else {
+            a.removeAttribute('aria-current');
+          }
+        });
+
+        // Leva a tela para o começo da lista, logo abaixo do menu
+        if (rolar) {
+          window.scrollTo({ top: Math.max(0, main.offsetTop - nav.offsetHeight), behavior: reduzir ? 'auto' : 'smooth' });
+        }
+      }
+
+      links.forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          var id = a.getAttribute('href').slice(1);
+          history.replaceState(null, '', '#' + id);
+          aplicar(id, true);
+        });
       });
+
+      // Link direto (ex.: #pizzas) ou alteração manual do endereço
+      window.addEventListener('hashchange', function () {
+        var id = location.hash.slice(1);
+        if (ids.indexOf(id) !== -1) aplicar(id, true);
+      });
+
+      // Estado inicial
+      var inicial = location.hash.slice(1);
+      if (ids.indexOf(inicial) !== -1 && inicial !== 'todos') {
+        aplicar(inicial, false);
+        window.addEventListener('load', function () {
+          window.scrollTo(0, Math.max(0, main.offsetTop - nav.offsetHeight));
+        });
+      } else {
+        aplicar('todos', false);
+      }
     })();
   </script>
 
