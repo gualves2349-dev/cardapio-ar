@@ -348,11 +348,11 @@
                 dele (as que abrem e fecham o comentário).
            └──────────────────────────────────────────────────────────────┘ -->
 
-      <!-- EXEMPLO (desativado) ▼ ----------------------------------------------
+
         <article class="prato">
           <div class="prato-info">
-            <h3>Sofá 3 Lugares</h3>
-            <p class="descricao">Sofá retrátil em tecido suede, 2,10 m de largura.</p>
+            <h3>Movel Banheiro</h3>
+            <p class="descricao">Movel Banheiro</p>
             <span class="preco">R$ 1.890,00</span>
             <button class="botao-ar" type="button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -365,8 +365,8 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/sofa-3-lugares.glb"
-              alt="Sofá de 3 lugares em 3D"
+              src="modelos/movelbanheiro.glb"
+              alt="Movel banheiro"
               ar
               ar-modes="webxr scene-viewer quick-look"
               ar-scale="fixed"
@@ -384,7 +384,7 @@
             <span class="dica">Arraste para girar</span>
           </div>
         </article>
-      ▲ FIM DO EXEMPLO ------------------------------------------------------ -->
+     
 
     </div>
 
@@ -422,11 +422,11 @@
                 dele (as que abrem e fecham o comentário).
            └──────────────────────────────────────────────────────────────┘ -->
 
-      <!-- EXEMPLO (desativado) ▼ ----------------------------------------------
+
         <article class="prato">
           <div class="prato-info">
             <h3>Pizza de Calabresa</h3>
-            <p class="descricao">Molho artesanal, calabresa fatiada, cebola e orégano. 8 pedaços.</p>
+            <p class="descricao">Molho artesanal, Mussarela, calabresa fatiada e orégano. 8 pedaços.</p>
             <span class="preco">R$ 49,90</span>
             <button class="botao-ar" type="button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -439,7 +439,7 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/pizza-calabresa.glb"
+              src="modelos/pizzacalabresa.glb"
               alt="Pizza de calabresa em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
@@ -458,7 +458,79 @@
             <span class="dica">Arraste para girar</span>
           </div>
         </article>
-      ▲ FIM DO EXEMPLO ------------------------------------------------------ -->
+
+      <article class="prato">
+          <div class="prato-info">
+            <h3>Pizza de Calabresa com Azeitona</h3>
+            <p class="descricao">Molho artesanal, Mussarela, calabresa fatiada, Azeitona e orégano. 8 pedaços.</p>
+            <span class="preco">R$ 49,90</span>
+            <button class="botao-ar" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+              </svg>
+              Ver na minha mesa
+            </button>
+            <p class="aviso" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="visor">
+            <model-viewer
+              src="modelos/pizzacaazeitona.glb"
+              alt="Pizza de calabresa e Azeitona em 3D"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="fixed"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              camera-orbit="0deg 45deg auto"
+              disable-zoom
+              disable-pan
+              interaction-prompt="none"
+              shadow-intensity="1"
+              loading="lazy">
+              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+            </model-viewer>
+            <span class="dica">Arraste para girar</span>
+          </div>
+        </article> 
+
+<article class="prato">
+          <div class="prato-info">
+            <h3>Pizza de Cogumelo e Tomilho</h3>
+            <p class="descricao">Molho artesanal, Mussarela, Cogumelos Paris, e orégano. 8 pedaços.</p>
+            <span class="preco">R$ 49,90</span>
+            <button class="botao-ar" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+              </svg>
+              Ver na minha mesa
+            </button>
+            <p class="aviso" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="visor">
+            <model-viewer
+              src="modelos/pizzacogutom.glb"
+              alt="Pizza de Cogumelo em 3D"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="fixed"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              camera-orbit="0deg 45deg auto"
+              disable-zoom
+              disable-pan
+              interaction-prompt="none"
+              shadow-intensity="1"
+              loading="lazy">
+              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+            </model-viewer>
+            <span class="dica">Arraste para girar</span>
+          </div>
+        </article>      
+
 
     </div>
 
@@ -606,12 +678,12 @@
                 dele (as que abrem e fecham o comentário).
            └──────────────────────────────────────────────────────────────┘ -->
 
-      <!-- EXEMPLO (desativado) ▼ ----------------------------------------------
+      
         <article class="prato">
           <div class="prato-info">
-            <h3>Fatia de Torta de Limão</h3>
-            <p class="descricao">Base crocante, creme de limão e merengue maçaricado.</p>
-            <span class="preco">R$ 16,00</span>
+            <h3>Torta Tres Chocolates</h3>
+            <p class="descricao">Base crocante e três chcolates.</p>
+            <span class="preco">R$ 160,00</span>
             <button class="botao-ar" type="button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
@@ -623,8 +695,8 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/torta-limao.glb"
-              alt="Fatia de torta de limão em 3D"
+              src="modelos/treschocolates.glb
+              alt="Torta Tres Chocolates em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
               ar-scale="fixed"
@@ -642,7 +714,79 @@
             <span class="dica">Arraste para girar</span>
           </div>
         </article>
-      ▲ FIM DO EXEMPLO ------------------------------------------------------ -->
+
+        <article class="prato">
+          <div class="prato-info">
+            <h3>Torta Trufada</h3>
+            <p class="descricao">Torta de chocolate trufado com Morango</p>
+            <span class="preco">R$ 160,00</span>
+            <button class="botao-ar" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+              </svg>
+              Ver na minha mesa
+            </button>
+            <p class="aviso" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="visor">
+            <model-viewer
+              src="modelos/tortatrufas.glb"
+              alt="Torta Trufada em 3D"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="fixed"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              camera-orbit="0deg 70deg auto"
+              disable-zoom
+              disable-pan
+              interaction-prompt="none"
+              shadow-intensity="1"
+              loading="lazy">
+              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+            </model-viewer>
+            <span class="dica">Arraste para girar</span>
+          </div>
+        </article>   
+
+        <article class="prato">
+          <div class="prato-info">
+            <h3>Bolo Três Amores</h3>
+            <p class="descricao">Bolo Três Amores.</p>
+            <span class="preco">R$ 160,00</span>
+            <button class="botao-ar" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+              </svg>
+              Ver na minha mesa
+            </button>
+            <p class="aviso" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="visor">
+            <model-viewer
+              src="modelos/tortatresamores.glb"
+              alt="Bolo Tres Amores em 3D"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="fixed"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              camera-orbit="0deg 70deg auto"
+              disable-zoom
+              disable-pan
+              interaction-prompt="none"
+              shadow-intensity="1"
+              loading="lazy">
+              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+            </model-viewer>
+            <span class="dica">Arraste para girar</span>
+          </div>
+        </article>      
+
 
 <!-- ============ ITEM: Fatia de bolo ============
            Para adicionar outro item, copie este bloco <article> inteiro,
@@ -720,12 +864,12 @@
                 dele (as que abrem e fecham o comentário).
            └──────────────────────────────────────────────────────────────┘ -->
 
-      <!-- EXEMPLO (desativado) ▼ ----------------------------------------------
+
         <article class="prato">
           <div class="prato-info">
-            <h3>Empadão de Frango</h3>
-            <p class="descricao">Massa amanteigada com frango desfiado, catupiry e milho.</p>
-            <span class="preco">R$ 18,00</span>
+            <h3>Empadão de Frango com Palmito</h3>
+            <p class="descricao">Massa amanteigada com frango desfiado, palmito, catupiry e milho.</p>
+            <span class="preco">R$ 180,00</span>
             <button class="botao-ar" type="button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
@@ -737,8 +881,8 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/empadao-frango.glb"
-              alt="Empadão de frango em 3D"
+              src="modelos/empadaofrangopalmitorequeijao.glb"
+              alt="Empadão de Frango com Palmito em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
               ar-scale="fixed"
@@ -756,8 +900,79 @@
             <span class="dica">Arraste para girar</span>
           </div>
         </article>
-      ▲ FIM DO EXEMPLO ------------------------------------------------------ -->
 
+        <article class="prato">
+          <div class="prato-info">
+            <h3>Empadão de Frango com Tomate Seco</h3>
+            <p class="descricao">Massa amanteigada com frango desfiado, tomate seco, catupiry e milho.</p>
+            <span class="preco">R$ 180,00</span>
+            <button class="botao-ar" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+              </svg>
+              Ver na minha mesa
+            </button>
+            <p class="aviso" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="visor">
+            <model-viewer
+              src="modelos/empadaodefrangocomtomateseco.glb"
+              alt="Empadão de Frango com Tomate Seco em 3D"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="fixed"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              camera-orbit="0deg 70deg auto"
+              disable-zoom
+              disable-pan
+              interaction-prompt="none"
+              shadow-intensity="1"
+              loading="lazy">
+              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+            </model-viewer>
+            <span class="dica">Arraste para girar</span>
+          </div>
+        </article>      
+
+        <article class="prato">
+          <div class="prato-info">
+            <h3>Empadão de Brocolis</h3>
+            <p class="descricao">Massa amanteigada com brocolis, tomate, catupiry e milho.</p>
+            <span class="preco">R$ 180,00</span>
+            <button class="botao-ar" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+              </svg>
+              Ver na minha mesa
+            </button>
+            <p class="aviso" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="visor">
+            <model-viewer
+              src="modelos/empadaodebrocolis.glb"
+              alt="Empadão de Brocolis em 3D"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="fixed"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              camera-orbit="0deg 70deg auto"
+              disable-zoom
+              disable-pan
+              interaction-prompt="none"
+              shadow-intensity="1"
+              loading="lazy">
+              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+            </model-viewer>
+            <span class="dica">Arraste para girar</span>
+          </div>
+        </article>   
+      
     </div>
 
     <!-- Aviso que aparece enquanto a categoria está vazia (some sozinho ao adicionar um item) -->
