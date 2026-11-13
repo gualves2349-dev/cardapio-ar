@@ -337,6 +337,63 @@
       .visor, .visor model-viewer { height: 230px; min-height: 230px; }
       .prato-info { padding: 10px 15px 18px; }
     }
+
+    /* ===== V2.0 / ETAPA 2: CLAREZA VISUAL E NAVEGAÇÃO ===== */
+    .selo-3d {
+      position:absolute; top:14px; left:14px; z-index:2;
+      padding:7px 11px; border:1px solid rgba(255,255,255,.12);
+      border-radius:999px; background:rgba(21,18,16,.78);
+      color:#f6f0ea; font-size:11px; font-weight:600;
+      letter-spacing:.01em; pointer-events:none;
+      backdrop-filter:blur(8px);
+    }
+    .prato { isolation:isolate; }
+    .prato-info .botao-ar { box-shadow:0 5px 18px rgba(217,31,46,.16); }
+    .prato-info .botao-ar:hover { box-shadow:0 7px 22px rgba(217,31,46,.25); }
+    .prato-info .descricao { max-width:50ch; }
+    .categorias a[aria-current="true"] { box-shadow:0 2px 12px rgba(217,31,46,.15); }
+    .visor { overflow:hidden; }
+    .visor::after { background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.025) 50%,transparent 75%); }
+    @media (max-width:699px) {
+      .selo-3d { top:12px; left:12px; }
+      .prato-info .preco { margin-bottom:14px; }
+      .prato-info .botao-ar { border-radius:14px; }
+      .categorias { scroll-margin-top:0; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      .prato,.botao-ar,.categorias a { transition:none; }
+    }
+
+    /* V2.0 / ETAPA 3: visualização ampliada, acessível e responsiva. */
+    .botao-explorar { display:block; width:100%; max-width:230px; margin-top:10px;
+      padding:11px 12px; min-height:44px; border:1px solid #66534d; border-radius:999px;
+      color:var(--texto); background:rgba(255,255,255,.045); font:600 12px "Montserrat",Arial,sans-serif;
+      cursor:pointer; }
+    .botao-explorar:hover,.botao-explorar:focus-visible { border-color:var(--vermelho); outline-offset:3px; }
+    .modal3d[hidden] { display:none; }
+    .modal3d { position:fixed; inset:0; z-index:1000; display:grid; place-items:center;
+      padding:12px; background:rgba(0,0,0,.86); }
+    .modal3d-painel { position:relative; width:min(100%,820px); height:min(92dvh,800px);
+      min-height:400px; display:flex; flex-direction:column; overflow:hidden;
+      background:#1b1513; border:1px solid #49352e; border-radius:20px; box-shadow:0 20px 80px #000a; }
+    .modal3d-topo { display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:14px 16px; border-bottom:1px solid #382b27; }
+    .modal3d-titulo { margin:0; font-size:clamp(15px,3vw,20px); font-weight:800; }
+    .modal3d-fechar { width:44px; height:44px; flex:none; border-radius:50%; border:1px solid #65504a;
+      background:#332622; color:white; font-size:26px; cursor:pointer; }
+    .modal3d-visor { position:relative; flex:1; min-height:0; background:radial-gradient(ellipse,#3a2c26 0%,#1b1513 70%); }
+    .modal3d-visor model-viewer { width:100%; height:100%; touch-action:pan-y; }
+    .modal3d-rodape { padding:12px 16px 16px; border-top:1px solid #382b27; }
+    .modal3d-rodape .botao-ar { max-width:none; min-height:52px; }
+    .modal3d-status { margin:8px 0 0; min-height:16px; font-size:12px; color:var(--texto-suave); }
+    body.modal3d-aberto { overflow:hidden; }
+    @media(max-width:699px) {
+      .prato-info .botao-explorar { max-width:none; }
+      .modal3d { padding:0; }
+      .modal3d-painel { width:100%; height:100dvh; max-height:none; min-height:0; border-radius:0; }
+      .modal3d-rodape { padding-bottom:max(16px,env(safe-area-inset-bottom)); }
+    }
+
   </style>
 </head>
 <body>
@@ -344,7 +401,7 @@
   <!-- Hero genérico (depois é só trocar o título, o texto e o botão) -->
   <header class="hero">
     <h1>Cardápio Realidade Aumentada</h1>
-    <p>Gire os itens aqui na tela e depois veja como ficam na sua mesa.</p>
+    <p>Explore os pratos em 3D e veja como ficam na sua mesa usando a câmera do celular.</p>
     <a class="botao-ar" href="#categorias">Ver categorias</a>
   </header>
 
@@ -364,7 +421,6 @@
   <nav class="categorias" id="categorias" aria-label="Categorias do cardápio">
     <ul>
       <li><a href="#todos" class="ativa" aria-current="true">Todos</a></li>
-      <li><a href="#moveis">Móveis</a></li>
       <li><a href="#pizzas">Pizzas</a></li>
       <li><a href="#lanches">Lanches Tradicionais</a></li>
       <li><a href="#bolos-tortas">Bolos e Tortas</a></li>
@@ -379,7 +435,7 @@
        ╚══════════════════════════════════════════════════════════════╝
        ESTRUTURA DA PÁGINA (de cima para baixo):
          1. <header class="hero">        -> topo com título
-         2. <nav class="categorias">     -> menu fixo: "Todos" + as 5 categorias (filtro)
+         2. <nav class="categorias">     -> menu fixo: "Todos" + as 4 categorias (filtro)
          3. <main>                       -> uma <section> por categoria
               <section id="...">         -> título + descrição da categoria
                 <div class="grade">      -> AQUI DENTRO vão os blocos <article class="prato">
@@ -398,81 +454,9 @@
 
        ARQUIVOS .glb: ficam na pasta "modelos/" e são chamados pelo atributo src="modelos/nome.glb". -->
 
-  <!-- ╔══════════════════════════════════════════════════════════════╗
-       ║  CATEGORIA: MÓVEIS                                          ║
-       ╚══════════════════════════════════════════════════════════════╝ -->
-  <section class="secao" id="moveis" aria-labelledby="titulo-moveis">
-    <div class="secao-topo">
-      <h2 class="categoria" id="titulo-moveis">Móveis</h2>
-      <p class="secao-sub">Veja o móvel em tamanho real no seu ambiente antes de comprar.</p>
-    </div>
+  <!-- Categoria Móveis removida na v2.0 conforme solicitado. -->
 
-    <div class="grade">
-
-      <!-- ┌─ COLOQUE OS ITENS DE "MÓVEIS" AQUI DENTRO DESTA GRADE ─┐
-           Cada item é um bloco <article class="prato"> ... </article>.
-           Os itens aparecem na ordem em que estão escritos.
-           DICA: em móveis o tamanho real importa. Mantenha ar-scale="fixed" e exporte o .glb
-           em escala real (1 unidade = 1 metro) para ele aparecer no tamanho certo na sala.
-
-           COMO ADICIONAR (3 passos):
-             1) Vá até o bloco "EXEMPLO" logo abaixo e copie o <article> inteiro.
-             2) Cole depois do último item desta categoria (ou no lugar do exemplo).
-             3) Troque: src (nome do .glb), alt, nome (h3), descrição e preço.
-                O arquivo .glb precisa estar dentro da pasta "modelos/".
-                Para ativar o exemplo direto, apague a primeira e a última linha
-                dele (as que abrem e fecham o comentário).
-           └──────────────────────────────────────────────────────────────┘ -->
-
-
-        <article class="prato">
-          <div class="prato-info">
-            <h3>Móvel Banheiro</h3>
-            <p class="descricao">Móvel Banheiro.</p>
-            <span class="preco">R$ 1.890,00</span>
-            <button class="botao-ar" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
-              </svg>
-              Ver na minha mesa
-            </button>
-            <p class="aviso" role="status" aria-live="polite"></p>
-          </div>
-
-          <div class="visor">
-            <model-viewer
-              src="modelos/movelbanheiro.glb"
-              alt="Móvel de banheiro em 3D"
-              ar
-              ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
-              auto-rotate
-              auto-rotate-delay="2000"
-              camera-orbit="0deg 70deg auto"
-              disable-zoom
-              disable-pan
-              interaction-prompt="none"
-              shadow-intensity="1"
-              loading="lazy">
-              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
-            </model-viewer>
-            <span class="dica">Arraste para girar</span>
-          </div>
-        </article>
-     
-
-    </div>
-
-    <!-- Aviso que aparece enquanto a categoria está vazia (some sozinho ao adicionar um item) -->
-    <div class="vazio">
-      <strong>Novidades em breve</strong>
-      <span>Estamos preparando os móveis desta categoria.</span>
-    </div>
-  </section>
-<!-- ============ FIM CATEGORIA: Móveis ============ -->
-
-  <!-- ╔══════════════════════════════════════════════════════════════╗
+<!-- ╔══════════════════════════════════════════════════════════════╗
        ║  CATEGORIA: PIZZAS                                          ║
        ╚══════════════════════════════════════════════════════════════╝ -->
   <section class="secao" id="pizzas" aria-labelledby="titulo-pizzas">
@@ -510,6 +494,7 @@
               </svg>
               Ver na minha mesa
             </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
             <p class="aviso" role="status" aria-live="polite"></p>
           </div>
 
@@ -531,6 +516,7 @@
               loading="lazy">
               <button slot="ar-button" style="display:none" aria-hidden="true"></button>
             </model-viewer>
+            <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
             <span class="dica">Arraste para girar</span>
           </div>
         </article>
@@ -546,6 +532,7 @@
               </svg>
               Ver na minha mesa
             </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
             <p class="aviso" role="status" aria-live="polite"></p>
           </div>
 
@@ -567,6 +554,7 @@
               loading="lazy">
               <button slot="ar-button" style="display:none" aria-hidden="true"></button>
             </model-viewer>
+            <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
             <span class="dica">Arraste para girar</span>
           </div>
         </article> 
@@ -582,6 +570,7 @@
               </svg>
               Ver na minha mesa
             </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
             <p class="aviso" role="status" aria-live="polite"></p>
           </div>
 
@@ -603,6 +592,7 @@
               loading="lazy">
               <button slot="ar-button" style="display:none" aria-hidden="true"></button>
             </model-viewer>
+            <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
             <span class="dica">Arraste para girar</span>
           </div>
         </article>    
@@ -618,6 +608,7 @@
               </svg>
               Ver na minha mesa
             </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
             <p class="aviso" role="status" aria-live="polite"></p>
           </div>
 
@@ -639,6 +630,7 @@
               loading="lazy">
               <button slot="ar-button" style="display:none" aria-hidden="true"></button>
             </model-viewer>
+            <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
             <span class="dica">Arraste para girar</span>
           </div>
         </article>       
@@ -691,6 +683,7 @@
               </svg>
               Ver na minha mesa
             </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
             <p class="aviso" role="status" aria-live="polite"></p>
           </div>
 
@@ -712,6 +705,7 @@
               loading="lazy">
               <button slot="ar-button" style="display:none" aria-hidden="true"></button>
             </model-viewer>
+            <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
             <span class="dica">Arraste para girar</span>
           </div>
         </article>
@@ -729,6 +723,7 @@
             </svg>
             Ver na minha mesa
           </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
 
@@ -750,6 +745,7 @@
             loading="lazy">
             <button slot="ar-button" style="display:none" aria-hidden="true"></button>
           </model-viewer>
+          <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
           <span class="dica">Arraste para girar</span>
         </div>
       </article>
@@ -802,6 +798,7 @@
               </svg>
               Ver na minha mesa
             </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
             <p class="aviso" role="status" aria-live="polite"></p>
           </div>
 
@@ -823,6 +820,7 @@
               loading="lazy">
               <button slot="ar-button" style="display:none" aria-hidden="true"></button>
             </model-viewer>
+            <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
             <span class="dica">Arraste para girar</span>
           </div>
         </article>
@@ -838,6 +836,7 @@
               </svg>
               Ver na minha mesa
             </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
             <p class="aviso" role="status" aria-live="polite"></p>
           </div>
 
@@ -859,6 +858,7 @@
               loading="lazy">
               <button slot="ar-button" style="display:none" aria-hidden="true"></button>
             </model-viewer>
+            <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
             <span class="dica">Arraste para girar</span>
           </div>
         </article>   
@@ -874,6 +874,7 @@
               </svg>
               Ver na minha mesa
             </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
             <p class="aviso" role="status" aria-live="polite"></p>
           </div>
 
@@ -895,6 +896,7 @@
               loading="lazy">
               <button slot="ar-button" style="display:none" aria-hidden="true"></button>
             </model-viewer>
+            <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
             <span class="dica">Arraste para girar</span>
           </div>
         </article>      
@@ -914,6 +916,7 @@
             </svg>
             Ver na minha mesa
           </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
 
@@ -935,6 +938,7 @@
             loading="lazy">
             <button slot="ar-button" style="display:none" aria-hidden="true"></button>
           </model-viewer>
+          <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
           <span class="dica">Arraste para girar</span>
         </div>
       </article>
@@ -988,6 +992,7 @@
               </svg>
               Ver na minha mesa
             </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
             <p class="aviso" role="status" aria-live="polite"></p>
           </div>
 
@@ -1009,6 +1014,7 @@
               loading="lazy">
               <button slot="ar-button" style="display:none" aria-hidden="true"></button>
             </model-viewer>
+            <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
             <span class="dica">Arraste para girar</span>
           </div>
         </article>
@@ -1024,6 +1030,7 @@
               </svg>
               Ver na minha mesa
             </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
             <p class="aviso" role="status" aria-live="polite"></p>
           </div>
 
@@ -1045,6 +1052,7 @@
               loading="lazy">
               <button slot="ar-button" style="display:none" aria-hidden="true"></button>
             </model-viewer>
+            <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
             <span class="dica">Arraste para girar</span>
           </div>
         </article>      
@@ -1060,6 +1068,7 @@
               </svg>
               Ver na minha mesa
             </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
             <p class="aviso" role="status" aria-live="polite"></p>
           </div>
 
@@ -1081,6 +1090,7 @@
               loading="lazy">
               <button slot="ar-button" style="display:none" aria-hidden="true"></button>
             </model-viewer>
+            <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
             <span class="dica">Arraste para girar</span>
           </div>
         </article>   
@@ -1098,7 +1108,7 @@
   <!-- ╔══════════════════════════════════════════════════════════════╗
        ║  ITENS DE TESTE (fora do menu de categorias)                 ║
        ╚══════════════════════════════════════════════════════════════╝
-       Estes itens não pertencem a nenhuma das 5 categorias.
+       Estes itens não pertencem às quatro categorias principais.
        Mova cada bloco <article> para a categoria certa acima, ou apague
        esta seção inteira (de <section> até </section>) quando não precisar mais. -->
   <section class="secao" id="testes" aria-labelledby="titulo-testes">
@@ -1119,6 +1129,7 @@
             </svg>
             Ver na minha mesa
           </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
 
@@ -1140,6 +1151,7 @@
             loading="lazy">
             <button slot="ar-button" style="display:none" aria-hidden="true"></button>
           </model-viewer>
+          <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
           <span class="dica">Arraste para girar</span>
         </div>
       </article>
@@ -1157,6 +1169,7 @@
             </svg>
             Ver na minha mesa
           </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
 
@@ -1178,6 +1191,7 @@
             loading="lazy">
             <button slot="ar-button" style="display:none" aria-hidden="true"></button>
           </model-viewer>
+          <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
           <span class="dica">Arraste para girar</span>
         </div>
       </article>
@@ -1195,6 +1209,7 @@
             </svg>
             Ver na minha mesa
           </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
 
@@ -1216,6 +1231,7 @@
             loading="lazy">
             <button slot="ar-button" style="display:none" aria-hidden="true"></button>
           </model-viewer>
+          <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
           <span class="dica">Arraste para girar</span>
         </div>
       </article>
@@ -1233,6 +1249,7 @@
             </svg>
             Ver na minha mesa
           </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
 
@@ -1254,6 +1271,7 @@
             loading="lazy">
             <button slot="ar-button" style="display:none" aria-hidden="true"></button>
           </model-viewer>
+          <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
           <span class="dica">Arraste para girar</span>
         </div>
       </article>
@@ -1271,6 +1289,7 @@
             </svg>
             Ver na minha mesa
           </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
 
@@ -1292,6 +1311,7 @@
             loading="lazy">
             <button slot="ar-button" style="display:none" aria-hidden="true"></button>
           </model-viewer>
+          <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
           <span class="dica">Arraste para girar</span>
         </div>
       </article>
@@ -1309,6 +1329,7 @@
             </svg>
             Ver na minha mesa
           </button>
+            <button class="botao-explorar" type="button" aria-label="Ampliar visualização 3D">⛶ Explorar em tela cheia</button>
           <p class="aviso" role="status" aria-live="polite"></p>
         </div>
 
@@ -1330,6 +1351,7 @@
             loading="lazy">
             <button slot="ar-button" style="display:none" aria-hidden="true"></button>
           </model-viewer>
+          <span class="selo-3d" aria-hidden="true">↻ Visualização 3D</span>
           <span class="dica">Arraste para girar</span>
         </div>
       </article>
@@ -1342,6 +1364,28 @@
 
   <footer>Toque em "Ver na minha mesa" para ver o item no seu ambiente.</footer>
 
+
+
+  <!-- V2.0 / ETAPA 3: modal único, reutilizado por todos os produtos; nenhum GLB foi modificado. -->
+  <div class="modal3d" id="modal3d" role="dialog" aria-modal="true" aria-labelledby="modal3d-titulo" hidden>
+    <div class="modal3d-painel">
+      <div class="modal3d-topo">
+        <h2 class="modal3d-titulo" id="modal3d-titulo">Explorar produto</h2>
+        <button class="modal3d-fechar" id="modal3d-fechar" type="button" aria-label="Fechar visualização">×</button>
+      </div>
+      <div class="modal3d-visor">
+        <model-viewer id="modal3d-modelo" alt="Produto em 3D" camera-controls auto-rotate
+          auto-rotate-delay="2000" ar ar-modes="webxr scene-viewer quick-look" ar-scale="fixed"
+          shadow-intensity="1" interaction-prompt="none" loading="eager">
+          <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+        </model-viewer>
+      </div>
+      <div class="modal3d-rodape">
+        <button class="botao-ar" id="modal3d-ar" type="button">Ver na minha mesa</button>
+        <p class="modal3d-status" id="modal3d-status" role="status" aria-live="polite">Arraste para girar e aproxime com dois dedos.</p>
+      </div>
+    </div>
+  </div>
 
   <script>
     document.querySelectorAll('.prato').forEach(function (cartao) {
@@ -1402,6 +1446,90 @@
         viewer.removeAttribute('auto-rotate');
       }
     });
+
+    // V2.0 / ETAPA 2: economiza animação fora da tela sem alterar os arquivos GLB.
+    // Observa a visibilidade e pausa apenas a rotação automática.
+    if ('IntersectionObserver' in window) {
+      var observador3D = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (entrada) {
+          var viewer = entrada.target;
+          if (!viewer.dataset.rotacaoOriginal) {
+            viewer.dataset.rotacaoOriginal = viewer.hasAttribute('auto-rotate') ? 'sim' : 'nao';
+          }
+          if (viewer.dataset.rotacaoOriginal !== 'sim') return;
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          if (entrada.isIntersecting) viewer.setAttribute('auto-rotate', '');
+          else viewer.removeAttribute('auto-rotate');
+        });
+      }, { rootMargin: '120px 0px', threshold: 0.01 });
+      document.querySelectorAll('.prato model-viewer').forEach(function (viewer) {
+        observador3D.observe(viewer);
+      });
+    }
+
+
+    // ETAPA 3: visualização ampliada sem duplicar os 18 modelos na página.
+    (function () {
+      var modal = document.getElementById('modal3d');
+      var modelo = document.getElementById('modal3d-modelo');
+      var titulo = document.getElementById('modal3d-titulo');
+      var status = document.getElementById('modal3d-status');
+      var fechar = document.getElementById('modal3d-fechar');
+      var botaoAR = document.getElementById('modal3d-ar');
+      var ultimoFoco = null;
+      function encerrar() {
+        if (modal.hidden) return;
+        modal.hidden = true;
+        document.body.classList.remove('modal3d-aberto');
+        modelo.removeAttribute('src');
+        if (ultimoFoco) ultimoFoco.focus();
+      }
+      document.querySelectorAll('.prato').forEach(function (cartao) {
+        var abrir = cartao.querySelector('.botao-explorar');
+        var origem = cartao.querySelector('model-viewer');
+        abrir.addEventListener('click', function () {
+          ultimoFoco = abrir;
+          titulo.textContent = cartao.querySelector('h3').textContent.trim();
+          status.textContent = 'Carregando modelo 3D…';
+          modelo.setAttribute('alt', origem.getAttribute('alt') || titulo.textContent);
+          modelo.setAttribute('camera-orbit', origem.getAttribute('camera-orbit') || '0deg 70deg auto');
+          modelo.setAttribute('src', origem.getAttribute('src'));
+          modal.hidden = false;
+          document.body.classList.add('modal3d-aberto');
+          fechar.focus();
+        });
+      });
+      modelo.addEventListener('load', function () {
+        status.textContent = 'Arraste para girar e aproxime com dois dedos.';
+      });
+      modelo.addEventListener('error', function () {
+        status.textContent = 'Não foi possível carregar este modelo 3D.';
+      });
+      fechar.addEventListener('click', encerrar);
+      modal.addEventListener('click', function (e) { if (e.target === modal) encerrar(); });
+      document.addEventListener('keydown', function (e) {
+        if (modal.hidden) return;
+        if (e.key === 'Escape') { e.preventDefault(); encerrar(); }
+        if (e.key === 'Tab') {
+          var itens = [fechar, botaoAR];
+          var indice = itens.indexOf(document.activeElement);
+          if (e.shiftKey && indice <= 0) { e.preventDefault(); botaoAR.focus(); }
+          else if (!e.shiftKey && indice === itens.length - 1) { e.preventDefault(); fechar.focus(); }
+        }
+      });
+      botaoAR.addEventListener('click', function () {
+        if (modelo.canActivateAR && typeof modelo.activateAR === 'function') {
+          try {
+            var p = modelo.activateAR();
+            if (p && typeof p.catch === 'function') p.catch(function () {
+              status.textContent = 'Não foi possível iniciar a realidade aumentada. Confira a compatibilidade do celular.';
+            });
+          } catch (_) { status.textContent = 'Não foi possível abrir a realidade aumentada.'; }
+        } else {
+          status.textContent = 'A realidade aumentada exige um celular compatível. Você pode explorar o modelo em 3D nesta tela.';
+        }
+      });
+    })();
 
     // ============ FILTRO DE CATEGORIAS ============
     // "Todos" mostra tudo; cada categoria mostra apenas os itens dela.
@@ -1466,6 +1594,7 @@
 
       // Estado inicial
       var inicial = location.hash.slice(1);
+      if (inicial === 'moveis') { history.replaceState(null, '', '#todos'); inicial = 'todos'; }
       if (ids.indexOf(inicial) !== -1 && inicial !== 'todos') {
         aplicar(inicial, false);
         window.addEventListener('load', function () {
