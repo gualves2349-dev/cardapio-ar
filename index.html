@@ -286,6 +286,57 @@
       font-size: 12px;
       color: var(--texto-suave);
     }
+
+    /* ===== V2.0 / ETAPA 1: EXPERIÊNCIA MOBILE ===== */
+    :root { color-scheme: dark; }
+    body { overflow-x: hidden; }
+    .prato { transition: border-color .2s ease, box-shadow .2s ease; }
+    .prato:focus-within { border-color: rgba(217,31,46,.65); }
+    .prato-info { min-width: 0; }
+    .prato-info h3 { overflow-wrap: anywhere; }
+    .botao-ar { min-height: 48px; }
+    .botao-ar:disabled { opacity: .65; cursor: wait; }
+    .visor { background: radial-gradient(ellipse at center, rgba(255,255,255,.045), transparent 70%); }
+    .visor::after {
+      content: 'Carregando visualização 3D…';
+      position: absolute; inset: 0; display: grid; place-items: center;
+      color: var(--texto-suave); font-size: 12px; text-align: center;
+      padding: 16px; pointer-events: none;
+    }
+    .visor.carregado::after, .visor.falha::after { display: none; }
+    .visor.falha::before {
+      content: 'Não foi possível carregar o modelo 3D.';
+      position: absolute; inset: 0; display: grid; place-items: center;
+      color: var(--texto-suave); font-size: 13px; text-align: center;
+      padding: 24px; pointer-events: none;
+    }
+    .aviso:not(:empty) { line-height: 1.5; }
+    @media (max-width: 699px) {
+      .hero { min-height: 0; padding: 44px 20px 38px; }
+      .hero h1 { max-width: 12ch; font-size: clamp(34px, 9vw, 54px); }
+      .hero p { margin-top: 14px; font-size: 15px; }
+      .hero .botao-ar { margin-top: 22px; width: 100%; max-width: 280px; }
+      .categorias ul { padding: 10px 14px; gap: 8px; scroll-padding-inline: 14px; }
+      .categorias a { padding: 11px 15px; font-size: 12px; min-height: 42px; }
+      main { padding: 4px 12px 48px; }
+      .secao-topo { margin: 28px 4px 14px; }
+      .secao-sub { line-height: 1.5; }
+      .grade { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+      .prato { grid-template-columns: minmax(0, 1fr); border-radius: 18px; }
+      .visor { order: -1; min-height: 265px; height: 265px; }
+      .visor model-viewer { min-height: 265px; height: 265px; }
+      .prato-info { padding: 12px 18px 20px; }
+      .prato-info h3 { font-size: 20px; }
+      .prato-info .descricao { font-size: 13px; }
+      .prato-info .preco { font-size: 23px; margin: 13px 0 16px; }
+      .prato-info .botao-ar { width: 100%; max-width: none; font-size: 14px; min-height: 52px; }
+      .dica { bottom: 12px; }
+      footer { line-height: 1.6; }
+    }
+    @media (max-width: 380px) {
+      .visor, .visor model-viewer { height: 230px; min-height: 230px; }
+      .prato-info { padding: 10px 15px 18px; }
+    }
   </style>
 </head>
 <body>
@@ -556,42 +607,7 @@
           </div>
         </article>      
 
-<article class="prato">
-          <div class="prato-info">
-            <h3>pizza4k</h3>
-            <p class="descricao">pizza4k.</p>
-            <span class="preco">R$ 4000</span>
-            <button class="botao-ar" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
-              </svg>
-              Ver na minha mesa
-            </button>
-            <p class="aviso" role="status" aria-live="polite"></p>
-          </div>
 
-          <div class="visor">
-            <model-viewer
-              src="modelos/pizza4k.glb"
-              alt="pizza4k em 3D"
-              ar
-              ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
-              auto-rotate
-              auto-rotate-delay="2000"
-              camera-orbit="0deg 45deg auto"
-              disable-zoom
-              disable-pan
-              interaction-prompt="none"
-              shadow-intensity="1"
-              loading="lazy">
-              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
-            </model-viewer>
-            <span class="dica">Arraste para girar</span>
-          </div>
-        </article> 
-      
     </div>
 
     <!-- Aviso que aparece enquanto a categoria está vazia (some sozinho ao adicionar um item) -->
@@ -1298,14 +1314,45 @@
       var botao = cartao.querySelector('.botao-ar');
       var aviso = cartao.querySelector('.aviso');
 
-      // Botão vermelho abre a realidade aumentada
-      botao.addEventListener('click', function () {
-        if (viewer.canActivateAR) {
-          viewer.activateAR();
-        } else {
-          aviso.textContent = 'Abra este cardápio no celular para ver o item na sua mesa.';
+      // Estado de carregamento e mensagens de falha por produto.
+      visor.classList.remove('carregado', 'falha');
+      viewer.addEventListener('load', function () {
+        visor.classList.add('carregado');
+        visor.classList.remove('falha');
+        botao.disabled = false;
+        if (aviso.dataset.erroModelo === '1') {
+          aviso.textContent = '';
+          delete aviso.dataset.erroModelo;
         }
       });
+      viewer.addEventListener('error', function () {
+        visor.classList.add('falha');
+        visor.classList.remove('carregado');
+        botao.disabled = true;
+        aviso.dataset.erroModelo = '1';
+        aviso.textContent = 'Não foi possível abrir este modelo. Tente novamente mais tarde.';
+      });
+
+      // Abre a realidade aumentada sem ocultar a visualização 3D comum.
+      botao.addEventListener('click', function () {
+        aviso.textContent = '';
+        if (viewer.canActivateAR && typeof viewer.activateAR === 'function') {
+          try {
+            var ativacao = viewer.activateAR();
+            if (ativacao && typeof ativacao.catch === 'function') {
+              ativacao.catch(function () {
+                aviso.textContent = 'Não foi possível iniciar a câmera. Verifique as permissões e tente novamente.';
+              });
+            }
+          } catch (erro) {
+            aviso.textContent = 'Não foi possível iniciar a realidade aumentada neste aparelho.';
+          }
+        } else {
+          aviso.textContent = 'A visualização 3D está disponível acima. Para ver na sua mesa, abra em um celular compatível com realidade aumentada.';
+        }
+      });
+
+      if (viewer.loaded) visor.classList.add('carregado');
 
       // Esconde a dica "Arraste para girar" depois da primeira interação
       viewer.addEventListener('camera-change', function (e) {
