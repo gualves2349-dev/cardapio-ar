@@ -364,6 +364,8 @@
       .prato,.botao-ar,.categorias a { transition:none; }
     }
 
+    /* V2.0 / ETAPA 4: ângulo inferior bloqueado para não expor a textura invertida.
+       Para um fundo de prato real em 360 graus, é necessário editar a geometria GLB. */
     /* V2.0 / ETAPA 3: visualização ampliada, acessível e responsiva. */
     .botao-explorar { display:block; width:100%; max-width:230px; margin-top:10px;
       padding:11px 12px; min-height:44px; border:1px solid #66534d; border-radius:999px;
@@ -500,12 +502,11 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/calabresa.glb"
+              data-src="modelos/calabresa.glb"
               alt="Pizza de calabresa em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
+              ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
               auto-rotate
               auto-rotate-delay="2000"
               camera-orbit="0deg 45deg auto"
@@ -538,12 +539,11 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/calabazeitona.glb"
+              data-src="modelos/calabazeitona.glb"
               alt="Pizza de calabresa com azeitona em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
+              ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
               auto-rotate
               auto-rotate-delay="2000"
               camera-orbit="0deg 45deg auto"
@@ -576,12 +576,11 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/cogutom.glb"
+              data-src="modelos/cogutom.glb"
               alt="Pizza de Cogumelo e Tomilho em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
+              ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
               auto-rotate
               auto-rotate-delay="2000"
               camera-orbit="0deg 45deg auto"
@@ -614,12 +613,11 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/pizza4k.glb"
+              data-src="modelos/pizza4k.glb"
               alt="pizza4k em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
+              ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
               auto-rotate
               auto-rotate-delay="2000"
               camera-orbit="0deg 45deg auto"
@@ -689,12 +687,11 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/x-burger.glb"
+              data-src="modelos/x-burger.glb"
               alt="X-Burger tradicional em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
+              ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
               auto-rotate
               auto-rotate-delay="2000"
               camera-orbit="0deg 70deg auto"
@@ -729,12 +726,11 @@
 
         <div class="visor">
           <model-viewer
-            src="modelos/xcoracao.glb"
+            data-src="modelos/xcoracao.glb"
             alt="X Coração em 3D"
             ar
             ar-modes="webxr scene-viewer quick-look"
-            ar-scale="fixed"
-            camera-controls
+            ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
             auto-rotate
             auto-rotate-delay="2000"
             camera-orbit="0deg 70deg auto"
@@ -804,12 +800,11 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/treschocolates.glb"
+              data-src="modelos/treschocolates.glb"
               alt="Torta Três Chocolates em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
+              ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
               auto-rotate
               auto-rotate-delay="2000"
               camera-orbit="0deg 70deg auto"
@@ -842,12 +837,11 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/tortatrufas.glb"
+              data-src="modelos/tortatrufas.glb"
               alt="Torta Trufada em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
+              ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
               auto-rotate
               auto-rotate-delay="2000"
               camera-orbit="0deg 70deg auto"
@@ -880,12 +874,11 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/tortatresamores.glb"
+              data-src="modelos/tortatresamores.glb"
               alt="Bolo Três Amores em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
+              ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
               auto-rotate
               auto-rotate-delay="2000"
               camera-orbit="0deg 70deg auto"
@@ -922,12 +915,11 @@
 
         <div class="visor">
           <model-viewer
-            src="modelos/bolo.glb"
+            data-src="modelos/bolo.glb"
             alt="Bolo de chocolate em 3D"
             ar
             ar-modes="webxr scene-viewer quick-look"
-            ar-scale="fixed"
-            camera-controls
+            ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
             auto-rotate
             auto-rotate-delay="2000"
             camera-orbit="0deg 70deg auto"
@@ -998,12 +990,11 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/empadaofrangopalmitorequeijao.glb"
+              data-src="modelos/empadaofrangopalmitorequeijao.glb"
               alt="Empadão de Frango com Palmito em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
+              ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
               auto-rotate
               auto-rotate-delay="2000"
               camera-orbit="0deg 70deg auto"
@@ -1036,12 +1027,11 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/empadaodefrangocomtomateseco.glb"
+              data-src="modelos/empadaodefrangocomtomateseco.glb"
               alt="Empadão de Frango com Tomate Seco em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
+              ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
               auto-rotate
               auto-rotate-delay="2000"
               camera-orbit="0deg 70deg auto"
@@ -1074,12 +1064,11 @@
 
           <div class="visor">
             <model-viewer
-              src="modelos/empadaodebrocolis.glb"
+              data-src="modelos/empadaodebrocolis.glb"
               alt="Empadão de Brócolis em 3D"
               ar
               ar-modes="webxr scene-viewer quick-look"
-              ar-scale="fixed"
-              camera-controls
+              ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
               auto-rotate
               auto-rotate-delay="2000"
               camera-orbit="0deg 70deg auto"
@@ -1135,12 +1124,11 @@
 
         <div class="visor">
           <model-viewer
-            src="modelos/controle.glb"
+            data-src="modelos/controle.glb"
             alt="Controle Split Samsung em 3D"
             ar
             ar-modes="webxr scene-viewer quick-look"
-            ar-scale="fixed"
-            camera-controls
+            ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
             auto-rotate
             auto-rotate-delay="2000"
             camera-orbit="0deg 90deg auto"
@@ -1175,12 +1163,11 @@
 
         <div class="visor">
           <model-viewer
-            src="modelos/mouse.glb"
+            data-src="modelos/mouse.glb"
             alt="Mouse Logitech em 3D"
             ar
             ar-modes="webxr scene-viewer quick-look"
-            ar-scale="fixed"
-            camera-controls
+            ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
             auto-rotate
             auto-rotate-delay="2000"
             camera-orbit="0deg 70deg auto"
@@ -1215,12 +1202,11 @@
 
         <div class="visor">
           <model-viewer
-            src="modelos/relogio.glb"
+            data-src="modelos/relogio.glb"
             alt="Relógio Tag Heuer F1 em 3D"
             ar
             ar-modes="webxr scene-viewer quick-look"
-            ar-scale="fixed"
-            camera-controls
+            ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
             auto-rotate
             auto-rotate-delay="2000"
             camera-orbit="0deg 70deg auto"
@@ -1255,12 +1241,11 @@
 
         <div class="visor">
           <model-viewer
-            src="modelos/fone.glb"
+            data-src="modelos/fone.glb"
             alt="Fone Bluetooth QCY em 3D"
             ar
             ar-modes="webxr scene-viewer quick-look"
-            ar-scale="fixed"
-            camera-controls
+            ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
             auto-rotate
             auto-rotate-delay="2000"
             camera-orbit="0deg 70deg auto"
@@ -1295,12 +1280,11 @@
 
         <div class="visor">
           <model-viewer
-            src="modelos/pf.glb"
+            data-src="modelos/pf.glb"
             alt="Prato Feito em 3D"
             ar
             ar-modes="webxr scene-viewer quick-look"
-            ar-scale="fixed"
-            camera-controls
+            ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
             auto-rotate
             auto-rotate-delay="2000"
             camera-orbit="0deg 70deg auto"
@@ -1335,12 +1319,11 @@
 
         <div class="visor">
           <model-viewer
-            src="modelos/pfdepicanha.glb"
+            data-src="modelos/pfdepicanha.glb"
             alt="Prato Feito de Picanha em 3D"
             ar
             ar-modes="webxr scene-viewer quick-look"
-            ar-scale="fixed"
-            camera-controls
+            ar-scale="fixed" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls
             auto-rotate
             auto-rotate-delay="2000"
             camera-orbit="0deg 70deg auto"
@@ -1374,7 +1357,7 @@
         <button class="modal3d-fechar" id="modal3d-fechar" type="button" aria-label="Fechar visualização">×</button>
       </div>
       <div class="modal3d-visor">
-        <model-viewer id="modal3d-modelo" alt="Produto em 3D" camera-controls auto-rotate
+        <model-viewer id="modal3d-modelo" alt="Produto em 3D" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 85deg auto" camera-controls auto-rotate
           auto-rotate-delay="2000" ar ar-modes="webxr scene-viewer quick-look" ar-scale="fixed"
           shadow-intensity="1" interaction-prompt="none" loading="eager">
           <button slot="ar-button" style="display:none" aria-hidden="true"></button>
@@ -1382,7 +1365,7 @@
       </div>
       <div class="modal3d-rodape">
         <button class="botao-ar" id="modal3d-ar" type="button">Ver na minha mesa</button>
-        <p class="modal3d-status" id="modal3d-status" role="status" aria-live="polite">Arraste para girar e aproxime com dois dedos.</p>
+        <p class="modal3d-status" id="modal3d-status" role="status" aria-live="polite">Arraste para girar e aproxime com dois dedos. A vista inferior está limitada.</p>
       </div>
     </div>
   </div>
@@ -1396,6 +1379,7 @@
 
       // Estado de carregamento e mensagens de falha por produto.
       visor.classList.remove('carregado', 'falha');
+      botao.disabled = true; // O modelo será carregado quando o cartão estiver próximo da tela.
       viewer.addEventListener('load', function () {
         visor.classList.add('carregado');
         visor.classList.remove('falha');
@@ -1416,6 +1400,7 @@
       // Abre a realidade aumentada sem ocultar a visualização 3D comum.
       botao.addEventListener('click', function () {
         aviso.textContent = '';
+        if (!viewer.getAttribute('src') && viewer.dataset.src) viewer.setAttribute('src', viewer.dataset.src);
         if (viewer.canActivateAR && typeof viewer.activateAR === 'function') {
           try {
             var ativacao = viewer.activateAR();
@@ -1432,7 +1417,7 @@
         }
       });
 
-      if (viewer.loaded) visor.classList.add('carregado');
+      if (viewer.loaded) { visor.classList.add('carregado'); botao.disabled = false; }
 
       // Esconde a dica "Arraste para girar" depois da primeira interação
       viewer.addEventListener('camera-change', function (e) {
@@ -1447,26 +1432,32 @@
       }
     });
 
-    // V2.0 / ETAPA 2: economiza animação fora da tela sem alterar os arquivos GLB.
-    // Observa a visibilidade e pausa apenas a rotação automática.
-    if ('IntersectionObserver' in window) {
-      var observador3D = new IntersectionObserver(function (entradas) {
-        entradas.forEach(function (entrada) {
-          var viewer = entrada.target;
-          if (!viewer.dataset.rotacaoOriginal) {
-            viewer.dataset.rotacaoOriginal = viewer.hasAttribute('auto-rotate') ? 'sim' : 'nao';
-          }
-          if (viewer.dataset.rotacaoOriginal !== 'sim') return;
-          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-          if (entrada.isIntersecting) viewer.setAttribute('auto-rotate', '');
-          else viewer.removeAttribute('auto-rotate');
-        });
-      }, { rootMargin: '120px 0px', threshold: 0.01 });
-      document.querySelectorAll('.prato model-viewer').forEach(function (viewer) {
-        observador3D.observe(viewer);
-      });
-    }
-
+    // ETAPA 4: só solicita GLBs de cartões próximos à área visível.
+    // A rotação automática também é pausada quando o cartão sai da tela.
+    (function () {
+      var reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var viewers = document.querySelectorAll('.prato model-viewer');
+      function carregar(viewer) {
+        if (!viewer.getAttribute('src') && viewer.dataset.src) {
+          viewer.setAttribute('src', viewer.dataset.src);
+        }
+      }
+      if ('IntersectionObserver' in window) {
+        var observador = new IntersectionObserver(function (entradas) {
+          entradas.forEach(function (entrada) {
+            var viewer = entrada.target;
+            if (entrada.isIntersecting) carregar(viewer);
+            if (!reduzir) {
+              if (entrada.isIntersecting) viewer.setAttribute('auto-rotate', '');
+              else viewer.removeAttribute('auto-rotate');
+            }
+          });
+        }, {rootMargin: '280px 0px', threshold: 0.01});
+        viewers.forEach(function (viewer) { observador.observe(viewer); });
+      } else {
+        viewers.forEach(carregar);
+      }
+    })();
 
     // ETAPA 3: visualização ampliada sem duplicar os 18 modelos na página.
     (function () {
@@ -1493,14 +1484,14 @@
           status.textContent = 'Carregando modelo 3D…';
           modelo.setAttribute('alt', origem.getAttribute('alt') || titulo.textContent);
           modelo.setAttribute('camera-orbit', origem.getAttribute('camera-orbit') || '0deg 70deg auto');
-          modelo.setAttribute('src', origem.getAttribute('src'));
+          modelo.setAttribute('src', origem.getAttribute('src') || origem.dataset.src);
           modal.hidden = false;
           document.body.classList.add('modal3d-aberto');
           fechar.focus();
         });
       });
       modelo.addEventListener('load', function () {
-        status.textContent = 'Arraste para girar e aproxime com dois dedos.';
+        status.textContent = 'Arraste para girar e aproxime com dois dedos. A vista inferior está limitada.';
       });
       modelo.addEventListener('error', function () {
         status.textContent = 'Não foi possível carregar este modelo 3D.';
