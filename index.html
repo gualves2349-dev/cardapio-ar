@@ -556,7 +556,42 @@
           </div>
         </article>      
 
+<article class="prato">
+          <div class="prato-info">
+            <h3>pizza4k</h3>
+            <p class="descricao">pizza4k.</p>
+            <span class="preco">R$ 4000</span>
+            <button class="botao-ar" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+              </svg>
+              Ver na minha mesa
+            </button>
+            <p class="aviso" role="status" aria-live="polite"></p>
+          </div>
 
+          <div class="visor">
+            <model-viewer
+              src="modelos/pizza4k.glb"
+              alt="pizza4k em 3D"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="fixed"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              camera-orbit="0deg 45deg auto"
+              disable-zoom
+              disable-pan
+              interaction-prompt="none"
+              shadow-intensity="1"
+              loading="lazy">
+              <button slot="ar-button" style="display:none" aria-hidden="true"></button>
+            </model-viewer>
+            <span class="dica">Arraste para girar</span>
+          </div>
+        </article> 
+      
     </div>
 
     <!-- Aviso que aparece enquanto a categoria está vazia (some sozinho ao adicionar um item) -->
