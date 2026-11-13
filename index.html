@@ -12,6 +12,30 @@
   <!-- Biblioteca Model Viewer do Google -->
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 
+  <!-- ================================================================
+       ETAPA 6 — PERSONALIZAÇÃO POR ESTABELECIMENTO
+       EDITE SOMENTE OS VALORES DO BLOCO ABAIXO PARA CADA CLIENTE.
+       Deixe logoUrl e links vazios ("") para ocultar esses elementos.
+       Cores em hexadecimal (#RRGGBB); links devem começar com https://.
+       ================================================================ -->
+  <script>
+    const CONFIG_ESTABELECIMENTO = {
+      nome: "Cardápio Realidade Aumentada",
+      titulo: "Cardápio Realidade Aumentada",
+      subtitulo: "Explore os pratos em 3D e veja como ficam na sua mesa usando a câmera do celular.",
+      logoUrl: "",                 // Exemplo: "imagens/logo.png"
+      logoAlt: "Logotipo do estabelecimento",
+      corFundo: "#151210",
+      corCartao: "#26201d",
+      corDestaque: "#d91f2e",
+      corDestaqueEscura: "#b3141f",
+      corPreco: "#ff6b6b",
+      whatsappUrl: "",             // Exemplo: "https://wa.me/5547999999999"
+      instagramUrl: "",            // Exemplo: "https://www.instagram.com/suaempresa/"
+      rodape: "Toque em 'Ver na minha mesa' para ver o item no seu ambiente."
+    };
+  </script>
+
   <style>
     :root {
       --fundo: #151210;
@@ -421,12 +445,21 @@
     .botao-explorar{border-radius:13px;background:rgba(255,255,255,.06)}
     .botao-ar{font-weight:800}
     @media(max-width:699px){.busca-area{padding:18px 12px 4px}.busca-topo{padding:0 3px}.busca-campo{min-height:52px}.prato{border-radius:19px}.prato-info .preco{font-size:23px}.botao-explorar{max-width:none}}
+
+    /* ===== V2.0 / ETAPA 6: IDENTIDADE CONFIGURÁVEL ===== */
+    .marca-logo{display:block;max-width:min(210px,65vw);max-height:110px;object-fit:contain;margin:0 auto 22px}
+    .marca-logo[hidden],.links-estabelecimento[hidden],.links-estabelecimento a[hidden]{display:none!important}
+    .links-estabelecimento{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+    .links-estabelecimento a{color:var(--texto);border:1px solid #59423d;border-radius:999px;padding:10px 18px;text-decoration:none;font-weight:600}
+    .links-estabelecimento a:focus-visible{outline:3px solid white;outline-offset:3px}
+
   </style>
 </head>
 <body>
 
   <!-- Hero genérico (depois é só trocar o título, o texto e o botão) -->
   <header class="hero">
+    <img id="marca-logo" class="marca-logo" alt="" hidden>
     <h1>Cardápio Realidade Aumentada</h1>
     <p>Explore os pratos em 3D e veja como ficam na sua mesa usando a câmera do celular.</p>
     <a class="botao-ar" href="#categorias">Ver categorias</a>
@@ -1382,7 +1415,13 @@
 <!-- ============ FIM: itens de teste ============ -->
   </main>
 
-  <footer>Toque em "Ver na minha mesa" para ver o item no seu ambiente.</footer>
+  <footer id="rodape-site">
+    <p id="rodape-mensagem">Toque em "Ver na minha mesa" para ver o item no seu ambiente.</p>
+    <nav class="links-estabelecimento" id="links-estabelecimento" aria-label="Redes e contato" hidden>
+      <a id="link-whatsapp" target="_blank" rel="noopener noreferrer" hidden>WhatsApp</a>
+      <a id="link-instagram" target="_blank" rel="noopener noreferrer" hidden>Instagram</a>
+    </nav>
+  </footer>
 
 
 
@@ -1406,6 +1445,45 @@
       </div>
     </div>
   </div>
+
+
+  <!-- ETAPA 6: aplica a identidade do estabelecimento sem alterar os produtos/GLBs. -->
+  <script>
+    (function () {
+      const c = CONFIG_ESTABELECIMENTO;
+      const root = document.documentElement;
+      const isColor = v => typeof v === 'string' && /^#[0-9a-fA-F]{6}$/.test(v);
+      const colors = {
+        corFundo: '--fundo', corCartao: '--cartao-a', corDestaque: '--vermelho',
+        corDestaqueEscura: '--vermelho-escuro', corPreco: '--preco'
+      };
+      Object.entries(colors).forEach(([key, variable]) => {
+        if (isColor(c[key])) root.style.setProperty(variable, c[key]);
+      });
+      const hero = document.querySelector('.hero');
+      const title = hero.querySelector('h1');
+      const subtitle = hero.querySelector('p');
+      title.textContent = c.titulo || c.nome || 'Cardápio Realidade Aumentada';
+      subtitle.textContent = c.subtitulo || '';
+      document.title = (c.nome || 'Cardápio') + ' | Cardápio AR';
+      const logo = document.getElementById('marca-logo');
+      if (typeof c.logoUrl === 'string' && c.logoUrl.trim()) {
+        logo.src = c.logoUrl.trim();
+        logo.alt = c.logoAlt || ('Logotipo de ' + (c.nome || 'estabelecimento'));
+        logo.hidden = false;
+        logo.addEventListener('error', () => { logo.hidden = true; });
+      }
+      document.getElementById('rodape-mensagem').textContent = c.rodape || '';
+      const links = document.getElementById('links-estabelecimento');
+      [['whatsappUrl','link-whatsapp'], ['instagramUrl','link-instagram']].forEach(([key,id]) => {
+        const url = c[key];
+        if (typeof url === 'string' && /^https:\/\//i.test(url.trim())) {
+          const a = document.getElementById(id);
+          a.href = url.trim(); a.hidden = false; links.hidden = false;
+        }
+      });
+    })();
+  </script>
 
   <script>
     document.querySelectorAll('.prato').forEach(function (cartao) {
