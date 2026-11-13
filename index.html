@@ -396,6 +396,31 @@
       .modal3d-rodape { padding-bottom:max(16px,env(safe-area-inset-bottom)); }
     }
 
+
+    /* ===== V2.0 / ETAPA 5: VITRINE PREMIUM + BUSCA ===== */
+    .busca-area{max-width:1100px;margin:0 auto;padding:22px 16px 4px}
+    .busca-topo{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px}
+    .busca-topo label{font-size:15px;font-weight:800;letter-spacing:.01em}
+    .busca-contador{color:var(--texto-suave);font-size:12px}
+    .busca-campo{display:flex;align-items:center;gap:12px;padding:0 14px;min-height:54px;background:#211b19;border:1px solid #4a3934;border-radius:15px;transition:border-color .2s,box-shadow .2s}
+    .busca-campo:focus-within{border-color:var(--vermelho);box-shadow:0 0 0 3px rgba(217,31,46,.16)}
+    .busca-campo svg{width:21px;height:21px;flex:none;color:#d6c6bf}
+    #busca-produtos{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--texto);font:500 14px "Montserrat",Arial,sans-serif}
+    #busca-produtos::placeholder{color:#9f918a}
+    #limpar-busca{background:rgba(255,255,255,.07);border:0;color:#fff;border-radius:9px;min-width:34px;min-height:34px;cursor:pointer;font-size:20px}
+    #limpar-busca[hidden]{display:none}
+    .busca-vazia[hidden],.prato[hidden]{display:none!important}
+    .busca-vazia{max-width:1068px;margin:20px auto;padding:35px 20px;text-align:center;background:#211b19;border:1px dashed #57433c;border-radius:18px}
+    .busca-vazia strong{display:block;font-size:17px;margin-bottom:8px}
+    .busca-vazia p{color:var(--texto-suave);font-size:13px;margin:0}
+    .prato{border-radius:20px;border-color:#3c302c;background:linear-gradient(145deg,#171211,#2b211d);box-shadow:0 12px 30px rgba(0,0,0,.14)}
+    .prato:hover{border-color:#705046;box-shadow:0 16px 36px rgba(0,0,0,.22)}
+    .prato-info h3{letter-spacing:-.02em}
+    .prato-info .preco{font-size:clamp(21px,2.8vw,25px);letter-spacing:-.02em}
+    .visor{background:radial-gradient(ellipse at 55% 42%,rgba(255,255,255,.09),transparent 66%)}
+    .botao-explorar{border-radius:13px;background:rgba(255,255,255,.06)}
+    .botao-ar{font-weight:800}
+    @media(max-width:699px){.busca-area{padding:18px 12px 4px}.busca-topo{padding:0 3px}.busca-campo{min-height:52px}.prato{border-radius:19px}.prato-info .preco{font-size:23px}.botao-explorar{max-width:none}}
   </style>
 </head>
 <body>
@@ -429,6 +454,18 @@
       <li><a href="#empadao">Empadão</a></li>
     </ul>
   </nav>
+
+
+  <!-- ETAPA 5: busca local sem servidor; pesquisa nome, descrição e categoria. -->
+  <section class="busca-area" role="search" aria-label="Pesquisar produtos">
+    <div class="busca-topo"><label for="busca-produtos">Encontre seu produto</label><span class="busca-contador" id="busca-contador" aria-live="polite"></span></div>
+    <div class="busca-campo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <input id="busca-produtos" type="search" inputmode="search" autocomplete="off" placeholder="Busque pizza, chocolate, frango..." aria-controls="todos">
+      <button type="button" id="limpar-busca" aria-label="Limpar pesquisa" hidden>×</button>
+    </div>
+  </section>
+  <div class="busca-vazia" id="busca-vazia" role="status" hidden><strong>Nenhum produto encontrado</strong><p>Tente outro nome ou ingrediente, ou selecione “Todos”.</p></div>
 
   <main id="todos">
 
@@ -1533,21 +1570,41 @@
       var reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       var ids = links.map(function (a) { return a.getAttribute('href').slice(1); });
+      var busca = document.getElementById('busca-produtos');
+      var limparBusca = document.getElementById('limpar-busca');
+      var contador = document.getElementById('busca-contador');
+      var vazioBusca = document.getElementById('busca-vazia');
+      var categoriaAtual = 'todos';
+      function normalizar(texto) {
+        return (texto || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+      }
+      function filtrarProdutos() {
+        var termo = normalizar(busca.value);
+        var visiveis = 0;
+        secoes.forEach(function (secao) {
+          var categoriaCompativel = categoriaAtual === 'todos' || secao.id === categoriaAtual;
+          var nomeCategoria = normalizar(secao.querySelector('h2')?.textContent || '');
+          var itensVisiveis = 0;
+          secao.querySelectorAll('.prato').forEach(function (cartao) {
+            var info = cartao.querySelector('.prato-info');
+            var texto = normalizar((info ? info.textContent : '') + ' ' + nomeCategoria);
+            var mostrar = categoriaCompativel && (!termo || texto.includes(termo));
+            cartao.hidden = !mostrar;
+            if (mostrar) { itensVisiveis++; visiveis++; }
+          });
+          secao.hidden = itensVisiveis === 0;
+        });
+        contador.textContent = visiveis + (visiveis === 1 ? ' produto' : ' produtos');
+        vazioBusca.hidden = visiveis !== 0;
+        limparBusca.hidden = !busca.value;
+      }
+      busca.addEventListener('input', filtrarProdutos);
+      limparBusca.addEventListener('click', function () { busca.value = ''; filtrarProdutos(); busca.focus(); });
+
 
       function aplicar(id, rolar) {
-        // Mostra/esconde as seções
-        secoes.forEach(function (s) {
-          var temItem = !!s.querySelector('.prato');
-          var mostrar = (id === 'todos') ? temItem : (s.id === id);
-          if (mostrar && s.hidden) {          // reinicia o fade só em quem acabou de aparecer
-            s.hidden = false;
-            s.classList.remove('entrando');
-            void s.offsetWidth;
-            s.classList.add('entrando');
-          } else {
-            s.hidden = !mostrar;
-          }
-        });
+        categoriaAtual = id;
+        filtrarProdutos();
 
         // Destaca o botão ativo
         links.forEach(function (a) {
